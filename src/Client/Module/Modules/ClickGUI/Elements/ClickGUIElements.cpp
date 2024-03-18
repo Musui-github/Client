@@ -83,21 +83,8 @@ std::string ClickGUIElements::SearchBar(int index, std::string& text, int limit,
 
 			if (!text.empty()) MusuiGUI::TextBoxes[index].isActive = true;
 
-			if (MusuiGUI::TextBoxes[index].isActive) {
-
-				MusuiGUI::lerp(searchBarSizes[index], Constraints::RelativeConstraint(2.7f, "height"),
-					0.12f * MusuiGUI::frameFactor);
-
-				MusuiGUI::lerp(searchCutOutHeights[index], Constraints::RelativeConstraint(0.395, "height"),
-					0.12f * MusuiGUI::frameFactor);
-			}
-			else {
-
-				MusuiGUI::lerp(searchBarSizes[index], Constraints::RelativeConstraint(0.42, "height"),
-					0.12f * MusuiGUI::frameFactor);
-
-				MusuiGUI::lerp(searchCutOutHeights[index], -0.5f, 0.12f * MusuiGUI::frameFactor);
-			}
+            MusuiGUI::lerp(searchBarSizes[index], Constraints::RelativeConstraint(2.7f, "height"),0.12f * MusuiGUI::frameFactor);
+            MusuiGUI::lerp(searchCutOutHeights[index], Constraints::RelativeConstraint(0.395, "height"),0.12f * MusuiGUI::frameFactor);
 
 			col = colors_primary1_rgb ? MusuiGUI::rgbColor : colors_primary1;
 			col.a = o_colors_primary1;
@@ -347,12 +334,10 @@ void ClickGUIElements::ModCard(float x, float y, Module* mod, const std::string 
 	D2D1_COLOR_F mod4Col = colors_mod4_rgb ? MusuiGUI::rgbColor : colors_mod4;
 	mod4Col.a = o_colors_mod4;
 
-	if (!Client::settings.getSettingByName<bool>("noicons")->value)
-		MusuiGUI::RoundedRectWithImageAndText(index, settingx2, (buttony - settingswidth) - settingsheightspac,
-			settingswidth, settingswidth,
-			mod4Col,
-			"\\Musui\\assets\\gear.png", iconwidth, iconwidth, L"");
-
+    MusuiGUI::RoundedRectWithImageAndText(index, settingx2, (buttony - settingswidth) - settingsheightspac,
+                                          settingswidth, settingswidth,
+                                          mod4Col,
+                                          "\\Musui\\assets\\gear.png", iconwidth, iconwidth, L"");
 
 	if (!iconpath.empty() && images[mod->name] == nullptr) {
 
@@ -366,9 +351,8 @@ void ClickGUIElements::ModCard(float x, float y, Module* mod, const std::string 
 			modicony += MusuiGUI::scrollpos;
 		}
 
-		if (!Client::settings.getSettingByName<bool>("noicons")->value && MusuiGUI::isRectInRect(MusuiGUI::ScrollViewRect, D2D1::RectF(modiconx, modicony, modiconx + paddingSize, modicony + paddingSize)))
-			D2D::context->DrawBitmap(images[mod->name], D2D1::RectF(modiconx, modicony, modiconx + paddingSize,
-				modicony + paddingSize));
+        D2D::context->DrawBitmap(images[mod->name], D2D1::RectF(modiconx, modicony, modiconx + paddingSize,
+                                                                modicony + paddingSize));
 	}
 
 	if (MusuiGUI::isInScrollView)

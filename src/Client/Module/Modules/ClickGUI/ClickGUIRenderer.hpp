@@ -166,11 +166,9 @@ public:
 			float logoX = navx - Constraints::SpacingConstraint(0.05, logoWidth);
 			float logoY = (navy + navigationBarHeight / 2.0f - logoWidth / 2.0f);
 
-			if (!Client::settings.getSettingByName<bool>("noicons")->value)
-				MusuiGUI::Image("\\Musui\\assets\\logo.png",
-					D2D1::RectF(logoX, logoY, logoX + logoWidth, logoY + logoWidth));
-
-			MusuiGUI::Tooltip("easter egg", logoX, logoY, "Never gonna give you up", logoWidth, logoWidth);
+            MusuiGUI::Image("\\Musui\\assets\\logo.png",
+                            D2D1::RectF(logoX, logoY, logoX + logoWidth, logoY + logoWidth));
+			//MusuiGUI::Tooltip("easter egg", logoX, logoY, "Never gonna give you up", logoWidth, logoWidth);
 
 			/* Logo End */
 
@@ -192,7 +190,7 @@ public:
 			mod6Col.a = o_colors_secondary6;
 
 			if (!MusuiGUI::activeColorPickerWindows && MusuiGUI::RoundedRadioButton(1, radioX, radioY, mod6Col,
-				modTextCol, L"Modules", RadioButtonWidth,
+				modTextCol, L"Mods", RadioButtonWidth,
 				RadioButtonHeight, round.x, round.x, "modules", curr)) {
 				this->curr = "modules";
 				ClickGUIRenderer::page.type = "normal";
