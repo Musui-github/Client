@@ -20,10 +20,11 @@ class TextHotkeyListener : public Listener {
         if (SDK::CurrentScreen == "hud_screen")
             if (module->settings.getSettingByName<bool>("enabled")->value) {
                 std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - last_used;
-                if (duration.count() >= 2.5) {
+                if (duration.count() >= 0.1) {
                     if (module->IsKeybind(event.keys) && module->IsKeyPartOfKeybind(event.key)) {
                         auto player = SDK::clientInstance->getLocalPlayer();
                         std::string xuid = *player->getXuid(&xuid);
+
                         std::shared_ptr<Packet> packet = SDK::createPacket(9);
                         TextPacket* akbar = reinterpret_cast<TextPacket*>(packet.get());
 
@@ -33,7 +34,6 @@ class TextHotkeyListener : public Listener {
                         akbar->translationNeeded = false;
                         akbar->xuid = xuid;
                         akbar->name = player->playerName;
-
                         SDK::clientInstance->getPacketSender()->sendToServer(akbar);
 
                         last_used = std::chrono::high_resolution_clock::now();
