@@ -22,8 +22,6 @@ void DownloadAndSave(std::string url, std::string path) {
 }
 
 bool Client::disable = false;
-
-
 void Client::initialize()
 {
     std::filesystem::path folder_path(Utils::getRoamingPath() + "\\Musui");
@@ -232,7 +230,7 @@ void Client::centerCursor() {
                         previousRect = currentRect;
                     }
                     Sleep(1000);
-                };
+                }
                 if (Client::disable && !Client::settings.getSettingByName<bool>("centreCursor")->value) toes = false;
                 });
 
