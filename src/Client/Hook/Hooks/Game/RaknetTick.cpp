@@ -60,7 +60,6 @@ void RaknetTickHook::callback(RaknetConnector* raknet)  {
                 }
 
                 towriteip = ip;
-                MusuiGUI::Notify("Playing on " + ip);
             }
         }
     }
