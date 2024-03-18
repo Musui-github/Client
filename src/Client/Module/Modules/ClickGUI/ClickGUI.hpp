@@ -22,7 +22,7 @@ public:
 		EventHandler::registerListener(new ClickGUIRenderer("ClickGUI", this));
 		EventHandler::registerListener(new GUIMouseListener("GUIMouse"));
 
-		if (settings.getSettingByName<std::string>("keybind")->value.empty()) settings.getSettingByName<std::string>("keybind")->value = "K";
+		if (settings.getSettingByName<std::string>("keybind")->value.empty()) settings.getSettingByName<std::string>("keybind")->value = "INS";
 
 		if (settings.getSettingByName<std::string>("editmenubind") == nullptr) settings.addSetting("editmenubind", (std::string)"L");
 

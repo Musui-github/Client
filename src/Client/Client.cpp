@@ -68,7 +68,7 @@ void Client::initialize()
         { "https://cdn-c6f.pages.dev/assets/fullbright.png", Path + "fullbright.png" },
         { "https://cdn-c6f.pages.dev/assets/frying-pan.png", Path + "frying-pan.png" },
         { "https://cdn-c6f.pages.dev/assets/font_bold.ttf", Path + "font_bold.ttf" },
-        { "https://cdn-c6f.pages.dev/assets/Musui-title.png", Path + "Musui-title.png" },
+        { "https://cdn-c6f.pages.dev/assets/musui-title.png", Path + "musui-title.png" },
         { "https://cdn-c6f.pages.dev/assets/combo.png", Path + "combo.png" },
         { "https://cdn-c6f.pages.dev/assets/reach.png", Path + "reach.png" },
         { "https://cdn-c6f.pages.dev/assets/keyboard.png", Path + "keyboard.png" },
@@ -159,7 +159,7 @@ void Client::initialize()
         Client::settings.addSetting("aliasingMode", (std::string)"Default");
 
     if (Client::settings.getSettingByName<std::string>("ejectKeybind") == nullptr)
-        Client::settings.addSetting("ejectKeybind", (std::string)"");
+        Client::settings.addSetting("ejectKeybind", (std::string)"I");
 
     if (Client::settings.getSettingByName<bool>("enabledModulesOnTop") == nullptr)
         Client::settings.addSetting("enabledModulesOnTop", false);
