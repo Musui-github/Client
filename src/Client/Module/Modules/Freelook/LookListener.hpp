@@ -73,9 +73,6 @@ public:
         memcpy((LPVOID)pitch, PatchedPitch.data(), PatchedPitch.size());
         VirtualProtect((LPVOID)pitch, PatchedPitch.size(), oldProtect, &oldProtect3);
 
-
-
-
         DWORD oldProtect5;
         VirtualProtect((LPVOID)movement, Patchedmovement.size(), PAGE_EXECUTE_READWRITE, &oldProtect5);
         memcpy((LPVOID)movement, Patchedmovement.data(), Patchedmovement.size());

@@ -59,14 +59,14 @@ int getViewPerspectiveHook::callback(uintptr_t* a1) {
 	auto mod = ModuleManager::getModule("SnapLook");
 	auto freemod = ModuleManager::getModule("FreeLook");
 
-	if (freemod != nullptr) {
+    /*if (freemod != nullptr) {
 
 
 		if (freemod->settings.getSettingByName<bool>("enabled")->value && RaknetTickHook::towriteip.find("hive") != std::string::npos || freemod->settings.getSettingByName<bool>("enabled")->value && RaknetTickHook::towriteip.find("galaxite") != std::string::npos) {
 			MusuiGUI::Notify("Can't use freelook on " + RaknetTickHook::towriteip);
 			freemod->settings.getSettingByName<bool>("enabled")->value = false;
 		}
-	}
+	} j'en est rien à foutre. */
 
 	if (mod != nullptr && SDK::CurrentScreen == "hud_screen") {
 
