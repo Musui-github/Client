@@ -541,20 +541,6 @@ public:
 						DWRITE_FONT_WEIGHT_NORMAL);
 
 					rectY += Constraints::SpacingConstraint(0.35, textWidth);
-					if (MusuiGUI::Toggle(2, rectX, rectY,
-						Client::settings.getSettingByName<bool>("watermark")->value)) {
-
-						Client::settings.getSettingByName<bool>("watermark")->value = !Client::settings.getSettingByName<bool>("watermark")->value;
-					}
-					MusuiGUI::MusuiTextWithFont(rectX + Constraints::SpacingConstraint(0.60, textWidth), rectY,
-						L"Watermark In Inventories",
-						Constraints::SpacingConstraint(4.5, textWidth), textHeight,
-						DWRITE_TEXT_ALIGNMENT_LEADING,
-						Constraints::SpacingConstraint(0.95, textWidth),
-						DWRITE_FONT_WEIGHT_NORMAL);
-
-
-					rectY += Constraints::SpacingConstraint(0.35, textWidth);
 					if (MusuiGUI::Toggle(8, rectX, rectY,
 						Client::settings.getSettingByName<bool>("enabledModulesOnTop")->value)) {
 

@@ -149,9 +149,6 @@ void Client::initialize()
     if (Client::settings.getSettingByName<bool>("noshadows") == nullptr)
         Client::settings.addSetting("noshadows", false);
 
-    if (Client::settings.getSettingByName<bool>("watermark") == nullptr)
-        Client::settings.addSetting("watermark", true);
-
     if (Client::settings.getSettingByName<bool>("centreCursor") == nullptr)
         Client::settings.addSetting("centreCursor", false);
 
