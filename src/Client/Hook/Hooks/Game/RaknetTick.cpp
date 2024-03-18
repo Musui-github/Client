@@ -1,5 +1,6 @@
 #include "RaknetTick.hpp"
 #include "../../../../SDK/SDK.hpp"
+#include "../../../GUI/Engine/Engine.hpp"
 #include "ActorBaseTick.hpp"
 #include <filesystem>
 #include <fstream>
@@ -59,6 +60,7 @@ void RaknetTickHook::callback(RaknetConnector* raknet)  {
                 }
 
                 towriteip = ip;
+                MusuiGUI::Notify("Playing on " + ip);
             }
         }
     }
