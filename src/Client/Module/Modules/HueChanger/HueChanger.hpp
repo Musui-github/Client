@@ -13,7 +13,7 @@ public:
 
     }
 
-    HueChanger() : Module("Saturation", "A filter to saturate or\ndesaturate Minecraft.", "\\Flarial\\assets\\fullbright.png", 'b') {
+    HueChanger() : Module("Saturation", "A filter to saturate or\ndesaturate Minecraft.", "\\Musui\\assets\\fullbright.png", 'b') {
 
         onEnable();
 
@@ -40,12 +40,12 @@ public:
         float x = Constraints::PercentageConstraint(0.019, "left");
         float y = Constraints::PercentageConstraint(0.10, "top");
 
-        FlarialGUI::FlarialTextWithFont(x, y, L"Saturation Intensity", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(x, y, L"Saturation Intensity", textWidth * 3.0f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
 
-        float percent = FlarialGUI::Slider(3, x + FlarialGUI::SettingsTextWidth("Saturation Intensity "),
+        float percent = MusuiGUI::Slider(3, x + MusuiGUI::SettingsTextWidth("Saturation Intensity "),
                                            y,
                                            this->settings.getSettingByName<float>("intensity")->value, 3.0f);
 

@@ -7,8 +7,8 @@ void renderBox(Player* player) {
 	Module* box = ModuleManager::getModule("Hitbox");
 
 	D2D1_COLOR_F color2;
-	if (box->settings.getSettingByName<bool>("color_rgb")->value) color2 = FlarialGUI::rgbColor;
-	else color2 = FlarialGUI::HexToColorF(box->settings.getSettingByName<std::string>("color")->value);
+	if (box->settings.getSettingByName<bool>("color_rgb")->value) color2 = MusuiGUI::rgbColor;
+	else color2 = MusuiGUI::HexToColorF(box->settings.getSettingByName<std::string>("color")->value);
 	auto localPlayer = SDK::clientInstance->getLocalPlayer();
     float dist = localPlayer->getPosition()->dist(*player->getPosition());
     if(player == nullptr) return;

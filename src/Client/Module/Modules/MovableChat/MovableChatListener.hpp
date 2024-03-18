@@ -40,7 +40,7 @@ public:
         if(SDK::clientInstance->getTopScreenName() == "hud_screen" && module->settings.getSettingByName<bool>("enabled")->value || SDK::clientInstance->getTopScreenName() == "pause_screen" && module->settings.getSettingByName<bool>("enabled")->value) {
 
             if(!enabled && ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value) {
-                FlarialGUI::Notify("To change the position of the chat, Please click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("editmenubind")->value);
+                MusuiGUI::Notify("To change the position of the chat, Please click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("editmenubind")->value);
                 enabled = true;
             }
 
@@ -58,9 +58,9 @@ public:
                 currentPos = { MovableChatListener::oriXY.x, MovableChatListener::oriXY.y };
 
             if(ClickGUIRenderer::editmenu)
-                FlarialGUI::SetWindowRect(currentPos.x, currentPos.y, width, height, 20);
+                MusuiGUI::SetWindowRect(currentPos.x, currentPos.y, width, height, 20);
 
-            Vec2<float> vec2 = FlarialGUI::CalculateMovedXY(currentPos.x , currentPos.y, 20, width, height);
+            Vec2<float> vec2 = MusuiGUI::CalculateMovedXY(currentPos.x , currentPos.y, 20, width, height);
 
 
             currentPos.x = vec2.x;
@@ -73,10 +73,10 @@ public:
             module->settings.setValue("percentageX", percentages.x);
             module->settings.setValue("percentageY", percentages.y);
 
-            FlarialGUI::RoundedRect(currentPos.x, currentPos.y, D2D1::ColorF(D2D1::ColorF::White, 0.4f), width, height);
+            MusuiGUI::RoundedRect(currentPos.x, currentPos.y, D2D1::ColorF(D2D1::ColorF::White, 0.4f), width, height);
 
             if(ClickGUIRenderer::editmenu)
-                FlarialGUI::UnsetWindowRect();
+                MusuiGUI::UnsetWindowRect();
         } else {
             enabled = false;
         }

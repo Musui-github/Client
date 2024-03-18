@@ -16,7 +16,7 @@ class HueListener : public Listener {
 
         if (module->settings.getSettingByName<bool>("enabled")->value) {
 
-            FlarialGUI::ApplyHue(module->settings.getSettingByName<float>("intensity")->value);
+            MusuiGUI::ApplyHue(module->settings.getSettingByName<float>("intensity")->value);
 
         }
 

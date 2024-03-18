@@ -10,7 +10,7 @@ class TextHotkey : public Module {
 public:
     
 
-    TextHotkey() : Module("Text Hotkey", "Send something in chat with a\nclick of a button!", "\\Flarial\\assets\\text-box.png", 'o') {
+    TextHotkey() : Module("Text Hotkey", "Send something in chat with a\nclick of a button!", "\\Musui\\assets\\text-box.png", 'o') {
 
         onEnable();
 
@@ -43,11 +43,11 @@ public:
         const float textWidth = Constraints::RelativeConstraint(0.12, "height", true);
         const float textHeight = Constraints::RelativeConstraint(0.029, "height", true);
 
-        FlarialGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
+        MusuiGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
 
-        FlarialGUI::TextBoxVisual(5, settings.getSettingByName<std::string>("text")->value, 50, toggleX, toggleY);
+        MusuiGUI::TextBoxVisual(5, settings.getSettingByName<std::string>("text")->value, 50, toggleX, toggleY);
 
     }
 };

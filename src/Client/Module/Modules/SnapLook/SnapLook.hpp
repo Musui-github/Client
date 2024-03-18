@@ -8,7 +8,7 @@ class SnapLook : public Module {
 
 public:
 
-    SnapLook() : Module("SnapLook", "Quickly look behind you.", "\\Flarial\\assets\\eye.png", 'V') {
+    SnapLook() : Module("SnapLook", "Quickly look behind you.", "\\Musui\\assets\\eye.png", 'V') {
 
         onEnable();
 
@@ -44,6 +44,6 @@ public:
         float toggleX = Constraints::PercentageConstraint(0.019, "left");
         float toggleY = Constraints::PercentageConstraint(0.10, "top");
 
-        FlarialGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
+        MusuiGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
     }
 };

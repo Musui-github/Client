@@ -32,7 +32,7 @@ void RaknetTickHook::callback(RaknetConnector* raknet)  {
                 }
             }
 
-            std::string settingspath = Utils::getRoamingPath() + "\\Flarial\\serverip.txt";
+            std::string settingspath = Utils::getRoamingPath() + "\\Musui\\serverip.txt";
 
             if (!std::filesystem::exists(settingspath)) {
 

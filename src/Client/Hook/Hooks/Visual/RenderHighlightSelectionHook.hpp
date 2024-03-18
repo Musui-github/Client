@@ -21,8 +21,8 @@ private:
 
         if (enabled) {
             D2D1_COLOR_F color2;
-            if (mod->settings.getSettingByName<bool>("color_rgb")->value) color2 = FlarialGUI::rgbColor;
-            else color2 = FlarialGUI::HexToColorF(mod->settings.getSettingByName<std::string>("color")->value);
+            if (mod->settings.getSettingByName<bool>("color_rgb")->value) color2 = MusuiGUI::rgbColor;
+            else color2 = MusuiGUI::HexToColorF(mod->settings.getSettingByName<std::string>("color")->value);
 
             MCCColor c;
             c.r = color2.r;

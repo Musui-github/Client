@@ -28,39 +28,39 @@
 #define o_colors_primary4 ModuleManager::getModule("ClickGUI")->settings.getSettingByName<float>("o_colors_primary4")->value
 #define colors_primary4_rgb ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("colors_primary4_rgb")->value
 
-#define colors_secondary1 FlarialGUI::HexToColorF(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("colors_secondary1")->value)
+#define colors_secondary1 MusuiGUI::HexToColorF(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("colors_secondary1")->value)
 #define o_colors_secondary1 ModuleManager::getModule("ClickGUI")->settings.getSettingByName<float>("o_colors_secondary1")->value
 #define colors_secondary1_rgb ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("colors_secondary1_rgb")->value
 
-#define colors_secondary2 FlarialGUI::HexToColorF(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("colors_secondary2")->value)
+#define colors_secondary2 MusuiGUI::HexToColorF(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("colors_secondary2")->value)
 #define o_colors_secondary2 ModuleManager::getModule("ClickGUI")->settings.getSettingByName<float>("o_colors_secondary2")->value
 #define colors_secondary2_rgb ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("colors_secondary2_rgb")->value
 
-#define colors_secondary7 FlarialGUI::HexToColorF(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("colors_secondary7")->value)
+#define colors_secondary7 MusuiGUI::HexToColorF(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("colors_secondary7")->value)
 #define o_colors_secondary7 ModuleManager::getModule("ClickGUI")->settings.getSettingByName<float>("o_colors_secondary7")->value
 #define colors_secondary7_rgb ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("colors_secondary7_rgb")->value
 
 std::map<std::string, ID2D1Bitmap*> ImagesClass::eimages;
-IDWriteFactory* FlarialGUI::writeFactory;
-ID2D1ImageBrush* FlarialGUI::blurbrush;
-ID2D1ImageBrush* FlarialGUI::shadowbrush;
-ID2D1Factory* FlarialGUI::factory;
+IDWriteFactory* MusuiGUI::writeFactory;
+ID2D1ImageBrush* MusuiGUI::blurbrush;
+ID2D1ImageBrush* MusuiGUI::shadowbrush;
+ID2D1Factory* MusuiGUI::factory;
 // todo use all cache
-std::unordered_map<std::string, ToolTipStruct> FlarialGUI::Tooltips;
-std::unordered_map<UINT32, winrt::com_ptr<ID2D1SolidColorBrush>> FlarialGUI::brushCache;
-std::unordered_map<std::string, winrt::com_ptr<ID2D1Image>> FlarialGUI::cachedBitmaps;
+std::unordered_map<std::string, ToolTipStruct> MusuiGUI::Tooltips;
+std::unordered_map<UINT32, winrt::com_ptr<ID2D1SolidColorBrush>> MusuiGUI::brushCache;
+std::unordered_map<std::string, winrt::com_ptr<ID2D1Image>> MusuiGUI::cachedBitmaps;
 
-std::unordered_map<uint64_t, winrt::com_ptr<IDWriteTextLayout>> FlarialGUI::textLayoutCache;
-std::unordered_map<uint64_t, winrt::com_ptr<IDWriteTextFormat>> FlarialGUI::textFormatCache;
-std::unordered_map<int, float> FlarialGUI::additionalY;
-std::unordered_map<std::string, winrt::com_ptr<ID2D1GradientStopCollection>> FlarialGUI::gradientStopCache;
-std::unordered_map<std::string, winrt::com_ptr<ID2D1LinearGradientBrush>> FlarialGUI::gradientBrushCache;
+std::unordered_map<uint64_t, winrt::com_ptr<IDWriteTextLayout>> MusuiGUI::textLayoutCache;
+std::unordered_map<uint64_t, winrt::com_ptr<IDWriteTextFormat>> MusuiGUI::textFormatCache;
+std::unordered_map<int, float> MusuiGUI::additionalY;
+std::unordered_map<std::string, winrt::com_ptr<ID2D1GradientStopCollection>> MusuiGUI::gradientStopCache;
+std::unordered_map<std::string, winrt::com_ptr<ID2D1LinearGradientBrush>> MusuiGUI::gradientBrushCache;
 
 
 
 float maxDarkenAmount = 0.1;
 
-bool FlarialGUI::CursorInRect(float rectX, float rectY, float width, float height)
+bool MusuiGUI::CursorInRect(float rectX, float rectY, float width, float height)
 {
 	if (MC::mousepos.x >= rectX && MC::mousepos.x <= rectX + width && MC::mousepos.y >= rectY && MC::mousepos.y <= rectY + height)
 	{
@@ -69,7 +69,7 @@ bool FlarialGUI::CursorInRect(float rectX, float rectY, float width, float heigh
 	return false;
 }
 
-bool FlarialGUI::isRectInRect(const D2D1_RECT_F& outer, const D2D1_RECT_F& inner) {
+bool MusuiGUI::isRectInRect(const D2D1_RECT_F& outer, const D2D1_RECT_F& inner) {
 
 	return (inner.left <= outer.right &&
 		inner.right >= outer.left &&
@@ -89,7 +89,7 @@ static bool CursorInEllipse(float ellipseX, float ellipseY, float radiusX, float
 }
 
 
-void FlarialGUI::PushSize(float x, float y, float width, float height)
+void MusuiGUI::PushSize(float x, float y, float width, float height)
 {
 	Dimension size;
 	size.x = x;
@@ -100,12 +100,12 @@ void FlarialGUI::PushSize(float x, float y, float width, float height)
 	dimension_stack.push(size);
 }
 
-void FlarialGUI::PopSize()
+void MusuiGUI::PopSize()
 {
 	dimension_stack.pop();
 }
 
-void FlarialGUI::PopAllStack()
+void MusuiGUI::PopAllStack()
 {
 	if (!dimension_stack.empty())
 	{
@@ -147,7 +147,7 @@ UINT32 generateUniqueTextFormatKey(std::string& font, int alignment,
 }
 
 // TODO Constrains to constants !!!
-IDWriteTextFormat* FlarialGUI::GetTextFormat(const DWRITE_TEXT_ALIGNMENT alignment, DWRITE_PARAGRAPH_ALIGNMENT paragraphAlignment, const float fontSize,
+IDWriteTextFormat* MusuiGUI::GetTextFormat(const DWRITE_TEXT_ALIGNMENT alignment, DWRITE_PARAGRAPH_ALIGNMENT paragraphAlignment, const float fontSize,
 	const DWRITE_FONT_WEIGHT weight,bool moduleFont) {
 	// todo: cache layouts and format
 
@@ -161,7 +161,7 @@ IDWriteTextFormat* FlarialGUI::GetTextFormat(const DWRITE_TEXT_ALIGNMENT alignme
 	}
 	else {
 		winrt::com_ptr<IDWriteTextFormat> textFormat;
-		FlarialGUI::writeFactory->CreateTextFormat(FlarialGUI::to_wide(fontName).c_str(),
+		MusuiGUI::writeFactory->CreateTextFormat(MusuiGUI::to_wide(fontName).c_str(),
 			nullptr,
 			weight,
 			DWRITE_FONT_STYLE_NORMAL,
@@ -185,7 +185,7 @@ IDWriteTextFormat* FlarialGUI::GetTextFormat(const DWRITE_TEXT_ALIGNMENT alignme
 
 
 // TODO Constrains to constants !!!
-IDWriteTextLayout* FlarialGUI::GetTextLayout(const wchar_t* text,
+IDWriteTextLayout* MusuiGUI::GetTextLayout(const wchar_t* text,
 	const DWRITE_TEXT_ALIGNMENT alignment, DWRITE_PARAGRAPH_ALIGNMENT paragraphAlignment, const float fontSize,
 	const DWRITE_FONT_WEIGHT weight, float maxWidth, float maxHeight, bool moduleFont) {
 	// todo: cache layouts and format
@@ -197,11 +197,11 @@ IDWriteTextLayout* FlarialGUI::GetTextLayout(const wchar_t* text,
 		return it->second.get();
 	}
 	else {
-		IDWriteTextFormat* textFormat = FlarialGUI::GetTextFormat(alignment, paragraphAlignment, fontSize, weight, moduleFont);
+		IDWriteTextFormat* textFormat = MusuiGUI::GetTextFormat(alignment, paragraphAlignment, fontSize, weight, moduleFont);
 
 		winrt::com_ptr<IDWriteTextLayout> textLayout;
 
-		FlarialGUI::writeFactory->CreateTextLayout(
+		MusuiGUI::writeFactory->CreateTextLayout(
 			text,
 			(UINT32)wcslen(text),
 			textFormat,
@@ -217,7 +217,7 @@ IDWriteTextLayout* FlarialGUI::GetTextLayout(const wchar_t* text,
 }
 
 
-bool FlarialGUI::Button(float x, float y, const D2D_COLOR_F color, const D2D_COLOR_F textColor, const wchar_t* text, const float width, const float height)
+bool MusuiGUI::Button(float x, float y, const D2D_COLOR_F color, const D2D_COLOR_F textColor, const wchar_t* text, const float width, const float height)
 {
 	if (isInScrollView) y += scrollpos;
 	if (shouldAdditionalY) y += additionalY[additionalIndex];
@@ -229,14 +229,14 @@ bool FlarialGUI::Button(float x, float y, const D2D_COLOR_F color, const D2D_COL
 	D2D_RECT_F rect = D2D1::RectF(x, y, x + width, y + height);
 
 
-	D2D::context->FillRectangle(rect, FlarialGUI::getBrush(buttonColor));
+	D2D::context->FillRectangle(rect, MusuiGUI::getBrush(buttonColor));
 
-	FlarialGUI::FlarialTextWithFont(x, y, text, width, height, DWRITE_TEXT_ALIGNMENT_CENTER, 14.0f, DWRITE_FONT_WEIGHT_NORMAL, textColor);
+	MusuiGUI::MusuiTextWithFont(x, y, text, width, height, DWRITE_TEXT_ALIGNMENT_CENTER, 14.0f, DWRITE_FONT_WEIGHT_NORMAL, textColor);
 
 	//IDWriteTextFormat* textFormat;
-	//FlarialGUI::writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 14.0f, L"en-US", &textFormat);
+	//MusuiGUI::writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 14.0f, L"en-US", &textFormat);
 	//ID2D1SolidColorBrush* textBrush;
-	//textBrush = FlarialGUI::getBrush(textColor);
+	//textBrush = MusuiGUI::getBrush(textColor);
 	//textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	//textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 	//D2D::context->DrawText(text, (UINT32)wcslen(text), textFormat,
@@ -258,12 +258,12 @@ bool FlarialGUI::Button(float x, float y, const D2D_COLOR_F color, const D2D_COL
 
 
 
-bool FlarialGUI::RoundedButton(const int index, float x, float y, const D2D_COLOR_F color, const D2D_COLOR_F textColor, const wchar_t* text, const float width, const float height, float radiusX, float radiusY, bool glow)
+bool MusuiGUI::RoundedButton(const int index, float x, float y, const D2D_COLOR_F color, const D2D_COLOR_F textColor, const wchar_t* text, const float width, const float height, float radiusX, float radiusY, bool glow)
 {
 	if (isInScrollView) y += scrollpos;
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -280,39 +280,39 @@ bool FlarialGUI::RoundedButton(const int index, float x, float y, const D2D_COLO
 	if (CursorInRect(x, y, width, height))
 	{
 		buttonColor = D2D1::ColorF(color.r - darkenAmounts[index], color.g - darkenAmounts[index], color.b - darkenAmounts[index], color.a);
-		FadeEffect::ApplyFadeInEffect(0.0055f * FlarialGUI::frameFactor, maxDarkenAmount, darkenAmounts[index]);
+		FadeEffect::ApplyFadeInEffect(0.0055f * MusuiGUI::frameFactor, maxDarkenAmount, darkenAmounts[index]);
 	}
 	else {
 		buttonColor = D2D1::ColorF(color.r - darkenAmounts[index], color.g - darkenAmounts[index], color.b - darkenAmounts[index], color.a);
-		FadeEffect::ApplyFadeOutEffect(0.0055f * FlarialGUI::frameFactor, darkenAmounts[index]);
+		FadeEffect::ApplyFadeOutEffect(0.0055f * MusuiGUI::frameFactor, darkenAmounts[index]);
 
 	}
 
 	D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(D2D1::RectF(x, y, x + width, y + height), radiusX, radiusY);
-	D2D::context->FillRoundedRectangle(roundedRect, FlarialGUI::getBrush(buttonColor));
+	D2D::context->FillRoundedRectangle(roundedRect, MusuiGUI::getBrush(buttonColor));
 
 
 	if (CursorInRect(x, y, width, height) && glow) {
 
-		FadeEffect::ApplyFadeInEffect(0.09f * FlarialGUI::frameFactor, 1.0f, glowAlphas[index]);
+		FadeEffect::ApplyFadeInEffect(0.09f * MusuiGUI::frameFactor, 1.0f, glowAlphas[index]);
 
 	}
 	else {
 
-		FadeEffect::ApplyFadeOutEffect(0.09f * FlarialGUI::frameFactor, glowAlphas[index]);
+		FadeEffect::ApplyFadeOutEffect(0.09f * MusuiGUI::frameFactor, glowAlphas[index]);
 
 	}
 
-	D2D1_COLOR_F allahColor = FlarialGUI::buttonColors[index];
+	D2D1_COLOR_F allahColor = MusuiGUI::buttonColors[index];
 	allahColor.r += 0.02f;
 	allahColor.g += 0.02f;
 	allahColor.b += 0.02f;
 	allahColor.a = glowAlphas[index];
 
-	FlarialGUI::InnerShadowRect(D2D1::RoundedRect(D2D1::RectF(x, y, x + width * 1.035f, y + height), radiusX, radiusY), 25, allahColor);
-	//IDWriteTextFormat* textFormat = FlarialGUI::getTextFormat(Client::settings.getSettingByName<std::string>("fontname")->value, Constraints::FontScaler(width), DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, DWRITE_TEXT_ALIGNMENT_CENTER);
+	MusuiGUI::InnerShadowRect(D2D1::RoundedRect(D2D1::RectF(x, y, x + width * 1.035f, y + height), radiusX, radiusY), 25, allahColor);
+	//IDWriteTextFormat* textFormat = MusuiGUI::getTextFormat(Client::settings.getSettingByName<std::string>("fontname")->value, Constraints::FontScaler(width), DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, DWRITE_TEXT_ALIGNMENT_CENTER);
 	// todo: a better way maybe?
-	FlarialGUI::FlarialTextWithFont(x, isInScrollView ? y - scrollpos : y, text, width, height, DWRITE_TEXT_ALIGNMENT_CENTER, width, DWRITE_FONT_WEIGHT_REGULAR, textColor);
+	MusuiGUI::MusuiTextWithFont(x, isInScrollView ? y - scrollpos : y, text, width, height, DWRITE_TEXT_ALIGNMENT_CENTER, width, DWRITE_FONT_WEIGHT_REGULAR, textColor);
 
 	if (isAdditionalY) SetIsInAdditionalYMode();
 
@@ -326,11 +326,11 @@ bool FlarialGUI::RoundedButton(const int index, float x, float y, const D2D_COLO
 	return false;
 }
 
-bool FlarialGUI::RoundedRadioButton(int index, float x, float y, const D2D_COLOR_F color, const D2D_COLOR_F textColor, const wchar_t* text, const float width, const float height, float radiusX, float radiusY, const std::string& radioNum, const std::string& currentNum)
+bool MusuiGUI::RoundedRadioButton(int index, float x, float y, const D2D_COLOR_F color, const D2D_COLOR_F textColor, const wchar_t* text, const float width, const float height, float radiusX, float radiusY, const std::string& radioNum, const std::string& currentNum)
 {
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -344,21 +344,21 @@ bool FlarialGUI::RoundedRadioButton(int index, float x, float y, const D2D_COLOR
 	D2D1_COLOR_F buttonColor;
 
 	if (radioNum != currentNum) {
-		FadeEffect::ApplyFadeInEffect(0.03f * FlarialGUI::frameFactor, 1, opacityAmounts[index]);
+		FadeEffect::ApplyFadeInEffect(0.03f * MusuiGUI::frameFactor, 1, opacityAmounts[index]);
 		buttonColor = D2D1::ColorF(color.r, color.g, color.b, color.a - opacityAmounts[index]);
 	}
 	else {
-		FadeEffect::ApplyFadeOutEffect(0.03f * FlarialGUI::frameFactor, opacityAmounts[index]);
+		FadeEffect::ApplyFadeOutEffect(0.03f * MusuiGUI::frameFactor, opacityAmounts[index]);
 		buttonColor = D2D1::ColorF(color.r, color.g, color.b, color.a - opacityAmounts[index]);
 	}
 
 	D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(D2D1::RectF(x, y, x + width, y + height), radiusX, radiusY);
-	D2D::context->FillRoundedRectangle(roundedRect, FlarialGUI::getBrush(buttonColor));
+	D2D::context->FillRoundedRectangle(roundedRect, MusuiGUI::getBrush(buttonColor));
 
 	x += Constraints::SpacingConstraint(0.077, width);
 	//D2D::context->DrawText(text, (UINT32)wcslen(text), textFormat, D2D1::RectF(x, y, x + width, y + height), textBrush);
 	// todo: check if this correct
-	FlarialGUI::FlarialTextWithFont(x, y, text, width, height, DWRITE_TEXT_ALIGNMENT_CENTER, width * 0.84, DWRITE_FONT_WEIGHT_REGULAR, textColor);
+	MusuiGUI::MusuiTextWithFont(x, y, text, width, height, DWRITE_TEXT_ALIGNMENT_CENTER, width * 0.84, DWRITE_FONT_WEIGHT_REGULAR, textColor);
 
 	if (isAdditionalY) SetIsInAdditionalYMode();
 
@@ -371,25 +371,25 @@ bool FlarialGUI::RoundedRadioButton(int index, float x, float y, const D2D_COLOR
 	return false;
 }
 
-void FlarialGUI::RoundedRect(float x, float y, const D2D_COLOR_F color, const float width, const float height, float radiusX, float radiusY)
+void MusuiGUI::RoundedRect(float x, float y, const D2D_COLOR_F color, const float width, const float height, float radiusX, float radiusY)
 {
 	if (isInScrollView) y += scrollpos;
 
 	if (isInScrollView && !isRectInRect(ScrollViewRect, D2D1::RectF(x, y, x + width, y + height))) return;
 
 	ID2D1SolidColorBrush* brush;
-	brush = FlarialGUI::getBrush(color);
+	brush = MusuiGUI::getBrush(color);
 	D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(D2D1::RectF(x, y, x + width, y + height), radiusX, radiusY);
 
 	D2D::context->FillRoundedRectangle(roundedRect, brush);
 }
 
-void FlarialGUI::RoundedHollowRect(float x, float y, float borderWidth, const D2D_COLOR_F color, const float width, const float height, float radiusX, float radiusY)
+void MusuiGUI::RoundedHollowRect(float x, float y, float borderWidth, const D2D_COLOR_F color, const float width, const float height, float radiusX, float radiusY)
 {
 	if (isInScrollView) y += scrollpos;
 
 	ID2D1SolidColorBrush* brush;
-	brush = FlarialGUI::getBrush(color);
+	brush = MusuiGUI::getBrush(color);
 	D2D1_RECT_F rect = D2D1::RectF(x, y, x + width, y + height);
 
 	// Make the border extend from the outside only
@@ -406,12 +406,12 @@ void FlarialGUI::RoundedHollowRect(float x, float y, float borderWidth, const D2
 	D2D::context->DrawRoundedRectangle(D2D1::RoundedRect(borderRect, radiusX, radiusY), brush, borderWidth);
 }
 
-void FlarialGUI::RoundedRectOnlyTopCorner(float x, float y, D2D_COLOR_F color, float width, float height, float radiusX, float radiusY)
+void MusuiGUI::RoundedRectOnlyTopCorner(float x, float y, D2D_COLOR_F color, float width, float height, float radiusX, float radiusY)
 {
 	if (isInScrollView) y += scrollpos;
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -478,7 +478,7 @@ void FlarialGUI::RoundedRectOnlyTopCorner(float x, float y, D2D_COLOR_F color, f
 
 	ID2D1SolidColorBrush* brush;
 
-	brush = FlarialGUI::getBrush(color);
+	brush = MusuiGUI::getBrush(color);
 
 	D2D::context->FillGeometry(geometry, brush);
 
@@ -490,7 +490,7 @@ void FlarialGUI::RoundedRectOnlyTopCorner(float x, float y, D2D_COLOR_F color, f
 }
 
 
-bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled) {
+bool MusuiGUI::Toggle(int index, float x, float y, bool isEnabled) {
 
 	D2D1_COLOR_F disabledColor = colors_primary3_rgb ? rgbColor : colors_primary3;
 	D2D1_COLOR_F enabledColor = colors_primary1_rgb ? rgbColor : colors_primary1;
@@ -503,7 +503,7 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled) {
 	if (shouldAdditionalY) {
 
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -518,13 +518,13 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled) {
 	if (isAdditionalY) UnSetIsInAdditionalYMode();
 
 	if (isEnabled) {
-		toggleColors[index] = FlarialGUI::LerpColor(toggleColors[index], enabledColor, 0.10f * FlarialGUI::frameFactor);
+		toggleColors[index] = MusuiGUI::LerpColor(toggleColors[index], enabledColor, 0.10f * MusuiGUI::frameFactor);
 	}
 	else {
-		toggleColors[index] = FlarialGUI::LerpColor(toggleColors[index], disabledColor, 0.10f * FlarialGUI::frameFactor);
+		toggleColors[index] = MusuiGUI::LerpColor(toggleColors[index], disabledColor, 0.10f * MusuiGUI::frameFactor);
 	}
 
-	FlarialGUI::RoundedRect(x, y, toggleColors[index], rectWidth, rectHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x, y, toggleColors[index], rectWidth, rectHeight, round.x, round.x);
 
 	// the circle (I KNOW IM USING A RECT LOL)
 
@@ -539,20 +539,20 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled) {
 	float enabledSpacing;
 
 	if (isEnabled) {
-		FadeEffect::ApplyFadeInEffect(2.4 * FlarialGUI::frameFactor, Constraints::SpacingConstraint(1.6, circleWidth), FlarialGUI::toggleSpacings[index]);
-		enabledSpacing = FlarialGUI::toggleSpacings[index];
+		FadeEffect::ApplyFadeInEffect(2.4 * MusuiGUI::frameFactor, Constraints::SpacingConstraint(1.6, circleWidth), MusuiGUI::toggleSpacings[index]);
+		enabledSpacing = MusuiGUI::toggleSpacings[index];
 		if (enabledSpacing > Constraints::SpacingConstraint(1.6, circleWidth)) enabledSpacing = Constraints::SpacingConstraint(1.6, circleWidth);
 	}
 	else {
-		FadeEffect::ApplyFadeOutEffect(2.4 * FlarialGUI::frameFactor, FlarialGUI::toggleSpacings[index]);
-		enabledSpacing = FlarialGUI::toggleSpacings[index];
+		FadeEffect::ApplyFadeOutEffect(2.4 * MusuiGUI::frameFactor, MusuiGUI::toggleSpacings[index]);
+		enabledSpacing = MusuiGUI::toggleSpacings[index];
 	}
 
-	FlarialGUI::RoundedRect(x + xSpacing + enabledSpacing, y + ySpacing, circleColor, circleWidth, circleHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x + xSpacing + enabledSpacing, y + ySpacing, circleColor, circleWidth, circleHeight, round.x, round.x);
 
 	if (isAdditionalY) SetIsInAdditionalYMode();
 
-	if (isInScrollView) y += FlarialGUI::scrollpos;
+	if (isInScrollView) y += MusuiGUI::scrollpos;
 	if (CursorInRect(x, y, rectWidth, rectHeight) && MC::mousebutton == MouseButton::Left && !MC::held && (!activeColorPickerWindows || index == 123))
 	{
 		MC::mousebutton = MouseButton::None;
@@ -562,7 +562,7 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled) {
 	return false;
 }
 
-bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled, bool rgb) {
+bool MusuiGUI::Toggle(int index, float x, float y, bool isEnabled, bool rgb) {
 
 	D2D1_COLOR_F disabledColor = colors_primary3;
 	D2D1_COLOR_F enabledColor = colors_primary1;
@@ -575,7 +575,7 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled, bool rgb) {
 	if (shouldAdditionalY) {
 
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -590,13 +590,13 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled, bool rgb) {
 	if (isAdditionalY) UnSetIsInAdditionalYMode();
 
 	if (isEnabled) {
-		toggleColors[index] = FlarialGUI::LerpColor(toggleColors[index], enabledColor, 0.10f * FlarialGUI::frameFactor);
+		toggleColors[index] = MusuiGUI::LerpColor(toggleColors[index], enabledColor, 0.10f * MusuiGUI::frameFactor);
 	}
 	else {
-		toggleColors[index] = FlarialGUI::LerpColor(toggleColors[index], disabledColor, 0.10f * FlarialGUI::frameFactor);
+		toggleColors[index] = MusuiGUI::LerpColor(toggleColors[index], disabledColor, 0.10f * MusuiGUI::frameFactor);
 	}
 
-	FlarialGUI::RoundedRect(x, y, rgb ? rgbColor : toggleColors[index], rectWidth, rectHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x, y, rgb ? rgbColor : toggleColors[index], rectWidth, rectHeight, round.x, round.x);
 
 	// the circle (I KNOW IM USING A RECT LOL)
 
@@ -611,20 +611,20 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled, bool rgb) {
 	float enabledSpacing;
 
 	if (isEnabled) {
-		FadeEffect::ApplyFadeInEffect(2.4 * FlarialGUI::frameFactor, Constraints::SpacingConstraint(1.6, circleWidth), FlarialGUI::toggleSpacings[index]);
-		enabledSpacing = FlarialGUI::toggleSpacings[index];
+		FadeEffect::ApplyFadeInEffect(2.4 * MusuiGUI::frameFactor, Constraints::SpacingConstraint(1.6, circleWidth), MusuiGUI::toggleSpacings[index]);
+		enabledSpacing = MusuiGUI::toggleSpacings[index];
 		if (enabledSpacing > Constraints::SpacingConstraint(1.6, circleWidth)) enabledSpacing = Constraints::SpacingConstraint(1.6, circleWidth);
 	}
 	else {
-		FadeEffect::ApplyFadeOutEffect(2.4 * FlarialGUI::frameFactor, FlarialGUI::toggleSpacings[index]);
-		enabledSpacing = FlarialGUI::toggleSpacings[index];
+		FadeEffect::ApplyFadeOutEffect(2.4 * MusuiGUI::frameFactor, MusuiGUI::toggleSpacings[index]);
+		enabledSpacing = MusuiGUI::toggleSpacings[index];
 	}
 
-	FlarialGUI::RoundedRect(x + xSpacing + enabledSpacing, y + ySpacing, circleColor, circleWidth, circleHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x + xSpacing + enabledSpacing, y + ySpacing, circleColor, circleWidth, circleHeight, round.x, round.x);
 
 	if (isAdditionalY) SetIsInAdditionalYMode();
 
-	if (isInScrollView) y += FlarialGUI::scrollpos;
+	if (isInScrollView) y += MusuiGUI::scrollpos;
 	if (CursorInRect(x, y, rectWidth, rectHeight) && MC::mousebutton == MouseButton::Left && !MC::held && (!activeColorPickerWindows || index == 123))
 	{
 		MC::mousebutton = MouseButton::None;
@@ -634,7 +634,7 @@ bool FlarialGUI::Toggle(int index, float x, float y, bool isEnabled, bool rgb) {
 	return false;
 }
 
-D2D_COLOR_F FlarialGUI::LerpColor(D2D_COLOR_F color1, D2D_COLOR_F color2, float t)
+D2D_COLOR_F MusuiGUI::LerpColor(D2D_COLOR_F color1, D2D_COLOR_F color2, float t)
 {
 	if (!Client::settings.getSettingByName<bool>("disableanims")->value) {
 		// Interpolate each color channel separately
@@ -647,7 +647,7 @@ D2D_COLOR_F FlarialGUI::LerpColor(D2D_COLOR_F color1, D2D_COLOR_F color2, float 
 	}
 	else return color2;
 }
-void FlarialGUI::ColorWheel(float x, float y, float radius)
+void MusuiGUI::ColorWheel(float x, float y, float radius)
 {
 	// Calculate the center of the color wheel
 	D2D1_POINT_2F center = D2D1::Point2F(x - radius / 2.0f, y - radius / 2.0f);
@@ -697,8 +697,8 @@ void FlarialGUI::ColorWheel(float x, float y, float radius)
 	// Draw the color wheel
 	D2D::context->FillEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), radialBrush);
 
-	FlarialGUI::RoundedRect(x, y, D2D1::ColorF(D2D1::ColorF::White), radius, radius);
-	FlarialGUI::RoundedRect(center.x, center.y, D2D1::ColorF(D2D1::ColorF::Black), radius, radius);
+	MusuiGUI::RoundedRect(x, y, D2D1::ColorF(D2D1::ColorF::White), radius, radius);
+	MusuiGUI::RoundedRect(center.x, center.y, D2D1::ColorF(D2D1::ColorF::Black), radius, radius);
 
 	// Release resources
 	gradientStopCollection->Release();
@@ -707,7 +707,7 @@ void FlarialGUI::ColorWheel(float x, float y, float radius)
 
 
 
-void FlarialGUI::HSLToRGB(float h, float s, float l, float& r, float& g, float& b)
+void MusuiGUI::HSLToRGB(float h, float s, float l, float& r, float& g, float& b)
 {
 	if (s == 0.0f)
 	{
@@ -724,7 +724,7 @@ void FlarialGUI::HSLToRGB(float h, float s, float l, float& r, float& g, float& 
 	}
 }
 
-float FlarialGUI::HueToRGB(float p, float q, float t)
+float MusuiGUI::HueToRGB(float p, float q, float t)
 {
 	if (t < 0.0f) t += 1.0f;
 	if (t > 1.0f) t -= 1.0f;
@@ -737,23 +737,23 @@ float FlarialGUI::HueToRGB(float p, float q, float t)
 }
 
 //todo: this defo laggs req investigation
-std::string FlarialGUI::TextBoxVisual(int index, std::string& text, int limit, float x, float y, std::string real) {
+std::string MusuiGUI::TextBoxVisual(int index, std::string& text, int limit, float x, float y, std::string real) {
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
 	}
 
-	if (FlarialGUI::TextBoxes[index].isActive) {
-		if (FlarialGUI::TextBoxes[index].isAt1) FlarialGUI::lerp(FlarialGUI::TextBoxes[index].cursorOpac, -1.0f, 0.05f * FlarialGUI::frameFactor);
-		else FlarialGUI::lerp(FlarialGUI::TextBoxes[index].cursorOpac, 2.0f, 0.05f * FlarialGUI::frameFactor);
+	if (MusuiGUI::TextBoxes[index].isActive) {
+		if (MusuiGUI::TextBoxes[index].isAt1) MusuiGUI::lerp(MusuiGUI::TextBoxes[index].cursorOpac, -1.0f, 0.05f * MusuiGUI::frameFactor);
+		else MusuiGUI::lerp(MusuiGUI::TextBoxes[index].cursorOpac, 2.0f, 0.05f * MusuiGUI::frameFactor);
 	}
-	else FlarialGUI::TextBoxes[index].cursorOpac = 0;
+	else MusuiGUI::TextBoxes[index].cursorOpac = 0;
 
-	if (FlarialGUI::TextBoxes[index].cursorOpac > 1) FlarialGUI::TextBoxes[index].isAt1 = true;
-	if (FlarialGUI::TextBoxes[index].cursorOpac < 0) FlarialGUI::TextBoxes[index].isAt1 = false;
+	if (MusuiGUI::TextBoxes[index].cursorOpac > 1) MusuiGUI::TextBoxes[index].isAt1 = true;
+	if (MusuiGUI::TextBoxes[index].cursorOpac < 0) MusuiGUI::TextBoxes[index].isAt1 = false;
 
 	D2D1_COLOR_F col;
 
@@ -765,7 +765,7 @@ std::string FlarialGUI::TextBoxVisual(int index, std::string& text, int limit, f
 
 	if (isAdditionalY) UnSetIsInAdditionalYMode();
 
-	text = FlarialGUI::TextBox(index, text, limit, x, y, Constraints::SpacingConstraint(1.55, textWidth), percHeight);
+	text = MusuiGUI::TextBox(index, text, limit, x, y, Constraints::SpacingConstraint(1.55, textWidth), percHeight);
 
 	if (TextBoxes[index].isActive) {
 		col = colors_primary1;
@@ -776,18 +776,18 @@ std::string FlarialGUI::TextBoxVisual(int index, std::string& text, int limit, f
 		col.a = o_colors_primary3;
 	}
 
-	FlarialGUI::RoundedRect(x, y, col, Constraints::SpacingConstraint(1.55, textWidth), percHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x, y, col, Constraints::SpacingConstraint(1.55, textWidth), percHeight, round.x, round.x);
 
 	float textSize = Constraints::SpacingConstraint(1.0, textWidth);
 
-	FlarialGUI::FlarialTextWithFont(x + Constraints::RelativeConstraint(0.05f), y, FlarialGUI::to_wide(text).c_str(),
+	MusuiGUI::MusuiTextWithFont(x + Constraints::RelativeConstraint(0.05f), y, MusuiGUI::to_wide(text).c_str(),
 		Constraints::SpacingConstraint(1.55, textWidth), percHeight,
 		DWRITE_TEXT_ALIGNMENT_LEADING, textSize, DWRITE_FONT_WEIGHT_NORMAL);
 
-	IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(FlarialGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_NEAR, textSize, DWRITE_FONT_WEIGHT_NORMAL, Constraints::SpacingConstraint(textWidth, 6.9f), percHeight);
+	IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(MusuiGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_NEAR, textSize, DWRITE_FONT_WEIGHT_NORMAL, Constraints::SpacingConstraint(textWidth, 6.9f), percHeight);
 
 	//IDWriteTextFormat* textFormat;
-	//FlarialGUI::writeFactory->CreateTextFormat(LClient::settings.getSettingByName<std::string>("fontname")->value, NULL, DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, Constraints::FontScaler(textSize), L"", &textFormat);
+	//MusuiGUI::writeFactory->CreateTextFormat(LClient::settings.getSettingByName<std::string>("fontname")->value, NULL, DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, Constraints::FontScaler(textSize), L"", &textFormat);
 
 	// textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR); !!!
 
@@ -798,14 +798,14 @@ std::string FlarialGUI::TextBoxVisual(int index, std::string& text, int limit, f
 	D2D1_COLOR_F cursorCol = colors_primary2_rgb ? rgbColor : colors_primary2;
 	cursorCol.a = o_colors_primary2;
 
-	cursorCol.a = FlarialGUI::TextBoxes[index].cursorOpac;
+	cursorCol.a = MusuiGUI::TextBoxes[index].cursorOpac;
 
-	FlarialGUI::lerp(FlarialGUI::TextBoxes[index].cursorX, x + textMetrics.widthIncludingTrailingWhitespace + Constraints::RelativeConstraint(0.055f), 0.420f * FlarialGUI::frameFactor);
+	MusuiGUI::lerp(MusuiGUI::TextBoxes[index].cursorX, x + textMetrics.widthIncludingTrailingWhitespace + Constraints::RelativeConstraint(0.055f), 0.420f * MusuiGUI::frameFactor);
 
-	if (FlarialGUI::TextBoxes[index].cursorX > x)
-		FlarialGUI::RoundedRect(FlarialGUI::TextBoxes[index].cursorX, y + Constraints::RelativeConstraint(0.069f) / 2.0f, cursorCol, Constraints::RelativeConstraint(0.01f), percHeight - Constraints::RelativeConstraint(0.069f), 0, 0);
+	if (MusuiGUI::TextBoxes[index].cursorX > x)
+		MusuiGUI::RoundedRect(MusuiGUI::TextBoxes[index].cursorX, y + Constraints::RelativeConstraint(0.069f) / 2.0f, cursorCol, Constraints::RelativeConstraint(0.01f), percHeight - Constraints::RelativeConstraint(0.069f), 0, 0);
 
-	FlarialGUI::FlarialTextWithFont(x + Constraints::SpacingConstraint(1.70, textWidth), y, FlarialGUI::to_wide(real).c_str(),
+	MusuiGUI::MusuiTextWithFont(x + Constraints::SpacingConstraint(1.70, textWidth), y, MusuiGUI::to_wide(real).c_str(),
 		Constraints::SpacingConstraint(6.9, textWidth), percHeight,
 		DWRITE_TEXT_ALIGNMENT_LEADING, Constraints::SpacingConstraint(1.00, textWidth),
 		DWRITE_FONT_WEIGHT_NORMAL);
@@ -816,39 +816,39 @@ std::string FlarialGUI::TextBoxVisual(int index, std::string& text, int limit, f
 }
 
 
-std::string FlarialGUI::TextBox(int index, std::string text, int limit, float x, float y, float width, float height) {
+std::string MusuiGUI::TextBox(int index, std::string text, int limit, float x, float y, float width, float height) {
 	if (isInScrollView) y += scrollpos;
 
 	if (CursorInRect(x, y, width, height) && MC::mouseaction == MouseAction::PRESS && MC::mousebutton == MouseButton::Left && !activeColorPickerWindows) {
 
-		FlarialGUI::TextBoxes[index].isActive = true;
+		MusuiGUI::TextBoxes[index].isActive = true;
 
 	}
 	else if (!CursorInRect(x, y, width, height) && MC::mouseaction == MouseAction::PRESS && MC::mousebutton == MouseButton::Left) {
 
-		FlarialGUI::TextBoxes[index].isActive = false;
-		FlarialGUI::TextBoxes[index].text = text;
+		MusuiGUI::TextBoxes[index].isActive = false;
+		MusuiGUI::TextBoxes[index].text = text;
 
 	}
-	else if (!FlarialGUI::TextBoxes[index].isActive && !activeColorPickerWindows) {
+	else if (!MusuiGUI::TextBoxes[index].isActive && !activeColorPickerWindows) {
 
-		FlarialGUI::TextBoxes[index].text = text;
+		MusuiGUI::TextBoxes[index].text = text;
 	}
 
 
-	if (FlarialGUI::TextBoxes[index].text.empty() && FlarialGUI::TextBoxes[index].firstTime) {
-		FlarialGUI::TextBoxes[index].firstTime = false;
-		FlarialGUI::TextBoxes[index].text = text;
+	if (MusuiGUI::TextBoxes[index].text.empty() && MusuiGUI::TextBoxes[index].firstTime) {
+		MusuiGUI::TextBoxes[index].firstTime = false;
+		MusuiGUI::TextBoxes[index].text = text;
 	}
 
-	FlarialGUI::TextBoxes[index].text = FlarialGUI::TextBoxes[index].text.substr(0, limit);
+	MusuiGUI::TextBoxes[index].text = MusuiGUI::TextBoxes[index].text.substr(0, limit);
 
-	return FlarialGUI::TextBoxes[index].text;
+	return MusuiGUI::TextBoxes[index].text;
 }
 
 
 
-float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const float maxValue, const float minValue,
+float MusuiGUI::Slider(int index, float x, float y, float startingPoint, const float maxValue, const float minValue,
 	const bool zerosafe) {
 	D2D1_COLOR_F color = colors_primary1_rgb ? rgbColor : colors_primary1;
 	D2D1_COLOR_F disabledColor = colors_primary3_rgb ? rgbColor : colors_primary3;
@@ -860,7 +860,7 @@ float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const
 
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -908,13 +908,13 @@ float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const
 		text = stream.str();
 	}
 
-	if (!TextBoxes[30 + index].isActive) FlarialGUI::RoundedRect(x, y, disabledColor, percWidth, percHeight, round.x, round.x);
-	else FlarialGUI::RoundedRect(x, y, color, percWidth, percHeight, round.x, round.x);
+	if (!TextBoxes[30 + index].isActive) MusuiGUI::RoundedRect(x, y, disabledColor, percWidth, percHeight, round.x, round.x);
+	else MusuiGUI::RoundedRect(x, y, color, percWidth, percHeight, round.x, round.x);
 
 
 	int limit = 5;
 	if (text.find('-') != std::string::npos) limit = 6;
-	text = FlarialGUI::TextBox(30 + index, text, limit, x, y, percWidth, percHeight);
+	text = MusuiGUI::TextBox(30 + index, text, limit, x, y, percWidth, percHeight);
 	text = Utils::remomveNonNumeric(text);
 
 
@@ -928,7 +928,7 @@ float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const
 	}
 	else if (!text.empty()) startingPoint = std::stof(text);
 
-	FlarialGUI::FlarialTextWithFont(x, y, FlarialGUI::to_wide(text).c_str(), percWidth, percHeight, DWRITE_TEXT_ALIGNMENT_CENTER,
+	MusuiGUI::MusuiTextWithFont(x, y, MusuiGUI::to_wide(text).c_str(), percWidth, percHeight, DWRITE_TEXT_ALIGNMENT_CENTER,
 		Constraints::FontScaler(percWidth * 14.5f), DWRITE_FONT_WEIGHT_NORMAL);
 
 	x += Constraints::SpacingConstraint(1.2, percWidth);
@@ -945,7 +945,7 @@ float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const
 
 	float circleY;
 
-	if (FlarialGUI::isInScrollView)
+	if (MusuiGUI::isInScrollView)
 		circleY = (y + scrollpos) + height / 2.0f;
 	else  circleY = y + height / 2.0f;
 
@@ -980,8 +980,8 @@ float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const
 	round = Constraints::RoundingConstraint(13, 13);
 
 	// Draw the circle in the middle
-	FlarialGUI::Circle(circleX, circleY, color, Constraints::SpacingConstraint(circleRadius, 1.1));
-	FlarialGUI::Circle(circleX, circleY, circleColor, Constraints::SpacingConstraint(circleRadius, 0.55));
+	MusuiGUI::Circle(circleX, circleY, color, Constraints::SpacingConstraint(circleRadius, 1.1));
+	MusuiGUI::Circle(circleX, circleY, circleColor, Constraints::SpacingConstraint(circleRadius, 0.55));
 
 	// Calculate the percentage
 	float percentage = ((circleX - rectangleLeft) / rectangleWidth) * (maxValue - minValue) + minValue;
@@ -1059,12 +1059,12 @@ float FlarialGUI::Slider(int index, float x, float y, float startingPoint, const
 
 
 
-void FlarialGUI::Circle(float x, float y, const D2D1_COLOR_F& color, float radius) {
+void MusuiGUI::Circle(float x, float y, const D2D1_COLOR_F& color, float radius) {
 
 	// Create a brush using the specified color
 	ID2D1SolidColorBrush* brush;
 
-	brush = FlarialGUI::getBrush(color);
+	brush = MusuiGUI::getBrush(color);
 
 	// Create an ellipse with the specified parameters
 	D2D1_ELLIPSE ellipse;
@@ -1078,7 +1078,7 @@ void FlarialGUI::Circle(float x, float y, const D2D1_COLOR_F& color, float radiu
 
 
 std::string
-FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string> options, std::string& value,
+MusuiGUI::Dropdown(int index, float x, float y, const std::vector<std::string> options, std::string& value,
 	std::string label) {
 	D2D1_COLOR_F col;
 
@@ -1095,7 +1095,7 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (i != index && FlarialGUI::DropDownMenus[i].isActive) {
+			if (i != index && MusuiGUI::DropDownMenus[i].isActive) {
 				y += additionalY[i];
 			}
 		}
@@ -1114,13 +1114,13 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 	selectedCol.a = o_colors_primary1;
 
 	float originalY = y;
-	if (!FlarialGUI::DropDownMenus[index].curColorDone) {
-		FlarialGUI::DropDownMenus[index].curColor = unselectedChildCol;
+	if (!MusuiGUI::DropDownMenus[index].curColorDone) {
+		MusuiGUI::DropDownMenus[index].curColor = unselectedChildCol;
 		y = y - maxHeight;
-		FlarialGUI::DropDownMenus[index].yChilds = y;
-		FlarialGUI::DropDownMenus[index].curColorDone = true;
+		MusuiGUI::DropDownMenus[index].yChilds = y;
+		MusuiGUI::DropDownMenus[index].curColorDone = true;
 	}
-	else y = FlarialGUI::DropDownMenus[index].yChilds;
+	else y = MusuiGUI::DropDownMenus[index].yChilds;
 
 	D2D1_COLOR_F hoveredChildCol = colors_primary4_rgb ? rgbColor : colors_primary4;
 	hoveredChildCol.a = o_colors_primary4;
@@ -1128,62 +1128,62 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 	if (!activeColorPickerWindows && CursorInRect(x, clickingY, Constraints::SpacingConstraint(1.55, textWidth), percHeight + maxHeight)) {
 		if (MC::mousebutton == MouseButton::Left && CursorInRect(x, clickingY, Constraints::SpacingConstraint(1.55, textWidth), percHeight)) {
 			//MC::mousebutton = MouseButton::None;
-			FlarialGUI::DropDownMenus[index].isActive = true;
-			value = FlarialGUI::DropDownMenus[index].selected;
+			MusuiGUI::DropDownMenus[index].isActive = true;
+			value = MusuiGUI::DropDownMenus[index].selected;
 		}
 	}
 	else if (!CursorInRect(x, clickingY, Constraints::SpacingConstraint(1.55, textWidth), percHeight + maxHeight)) {
 		if (MC::mousebutton == MouseButton::Left) {
 			//MC::mousebutton = MouseButton::None;
-			FlarialGUI::DropDownMenus[index].isActive = false;
-			value = FlarialGUI::DropDownMenus[index].selected;
+			MusuiGUI::DropDownMenus[index].isActive = false;
+			value = MusuiGUI::DropDownMenus[index].selected;
 		}
-		FlarialGUI::lerp(FlarialGUI::DropDownMenus[index].opacityHover, 0.0f, 0.25 * FlarialGUI::frameFactor);
+		MusuiGUI::lerp(MusuiGUI::DropDownMenus[index].opacityHover, 0.0f, 0.25 * MusuiGUI::frameFactor);
 	}
-	else if (!FlarialGUI::DropDownMenus[index].isActive) {
-		if (FlarialGUI::DropDownMenus[index].firstTime) {
-			FlarialGUI::DropDownMenus[index].selected = value;
-			FlarialGUI::DropDownMenus[index].firstTime = false;
+	else if (!MusuiGUI::DropDownMenus[index].isActive) {
+		if (MusuiGUI::DropDownMenus[index].firstTime) {
+			MusuiGUI::DropDownMenus[index].selected = value;
+			MusuiGUI::DropDownMenus[index].firstTime = false;
 		}
-		value = FlarialGUI::DropDownMenus[index].selected;
+		value = MusuiGUI::DropDownMenus[index].selected;
 	}
 
-	if (FlarialGUI::DropDownMenus[index].isActive) {
+	if (MusuiGUI::DropDownMenus[index].isActive) {
 		//y = originalY;
 
-		if (FlarialGUI::DropDownMenus[index].offsettedQ == false) {
-			//FlarialGUI::DropDownMenus[index].offsetted = additionalY + addYVal;
-			FlarialGUI::DropDownMenus[index].offsettedQ = true;
+		if (MusuiGUI::DropDownMenus[index].offsettedQ == false) {
+			//MusuiGUI::DropDownMenus[index].offsetted = additionalY + addYVal;
+			MusuiGUI::DropDownMenus[index].offsettedQ = true;
 			additionalY[additionalIndex] += addYVal;
 		}
-		FlarialGUI::lerp(y, originalY, 0.25f * FlarialGUI::frameFactor);
-		FlarialGUI::DropDownMenus[index].curColor = FlarialGUI::LerpColor(FlarialGUI::DropDownMenus[index].curColor, selectedCol, 0.1f * FlarialGUI::frameFactor);
-		FlarialGUI::lerp(
-			FlarialGUI::DropDownMenus[index].rotation,
+		MusuiGUI::lerp(y, originalY, 0.25f * MusuiGUI::frameFactor);
+		MusuiGUI::DropDownMenus[index].curColor = MusuiGUI::LerpColor(MusuiGUI::DropDownMenus[index].curColor, selectedCol, 0.1f * MusuiGUI::frameFactor);
+		MusuiGUI::lerp(
+			MusuiGUI::DropDownMenus[index].rotation,
 			180.0f,
-			0.25 * FlarialGUI::frameFactor
+			0.25 * MusuiGUI::frameFactor
 		);
 	}
 	else {
 		//y = originalY - maxHeight;
 
-		if (FlarialGUI::DropDownMenus[index].offsettedQ == true) {
+		if (MusuiGUI::DropDownMenus[index].offsettedQ == true) {
 			additionalY[additionalIndex] -= addYVal;
-			//FlarialGUI::DropDownMenus[index].offsetted = additionalY - addYVal;
-			FlarialGUI::DropDownMenus[index].offsettedQ = false;
+			//MusuiGUI::DropDownMenus[index].offsetted = additionalY - addYVal;
+			MusuiGUI::DropDownMenus[index].offsettedQ = false;
 		}
-		FlarialGUI::lerp(y, originalY - maxHeight, 0.25f * FlarialGUI::frameFactor);
-		FlarialGUI::DropDownMenus[index].curColor = FlarialGUI::LerpColor(FlarialGUI::DropDownMenus[index].curColor, unselectedChildCol, 0.1f * FlarialGUI::frameFactor);
-		FlarialGUI::lerp(
-			FlarialGUI::DropDownMenus[index].rotation,
+		MusuiGUI::lerp(y, originalY - maxHeight, 0.25f * MusuiGUI::frameFactor);
+		MusuiGUI::DropDownMenus[index].curColor = MusuiGUI::LerpColor(MusuiGUI::DropDownMenus[index].curColor, unselectedChildCol, 0.1f * MusuiGUI::frameFactor);
+		MusuiGUI::lerp(
+			MusuiGUI::DropDownMenus[index].rotation,
 			0.0f,
-			0.25 * FlarialGUI::frameFactor
+			0.25 * MusuiGUI::frameFactor
 		);
 	};
 
-	if (!FlarialGUI::DropDownMenus[index].hoveredIndex) FlarialGUI::DropDownMenus[index].hoveredIndex = 1;
+	if (!MusuiGUI::DropDownMenus[index].hoveredIndex) MusuiGUI::DropDownMenus[index].hoveredIndex = 1;
 
-	FlarialGUI::DropDownMenus[index].yChilds = y;
+	MusuiGUI::DropDownMenus[index].yChilds = y;
 
 	int counter = 0;
 
@@ -1194,12 +1194,12 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 	if (isAdditionalY) UnSetIsInAdditionalYMode();
 
 	for (const std::string& op : options) {
-		if (op == FlarialGUI::DropDownMenus[index].selected) continue;
+		if (op == MusuiGUI::DropDownMenus[index].selected) continue;
 
 		float curY = y + (counter * childHeights) - (counter * 0.1f) + 5;
 
 		if (counter == 0) {
-			if (curY > (originalY - lastChildHeight + 20)) FlarialGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, 0, 0);
+			if (curY > (originalY - lastChildHeight + 20)) MusuiGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, 0, 0);
 
 			counter++;
 			curY = y + (counter * childHeights) - (counter * 0.1f) + 5;
@@ -1210,49 +1210,49 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 		float curClickingY = clickingY + (counter * childHeights) + 5;
 
 		if (counter == options.size() - 1) {
-			FlarialGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), lastChildHeight, 0, 0);
-			FlarialGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, round.x, round.y);
+			MusuiGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), lastChildHeight, 0, 0);
+			MusuiGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, round.x, round.y);
 		}
-		else FlarialGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, 0, 0);
+		else MusuiGUI::RoundedRect(x + offset, curY, unselectedChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, 0, 0);
 
 		if (CursorInRect(x + offset, curClickingY, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights)) {
-			if (MC::mousebutton == MouseButton::Left && FlarialGUI::DropDownMenus[index].isActive) {
+			if (MC::mousebutton == MouseButton::Left && MusuiGUI::DropDownMenus[index].isActive) {
 				MC::mousebutton = MouseButton::None;
-				FlarialGUI::DropDownMenus[index].isActive = false;
-				FlarialGUI::DropDownMenus[index].opacityHover = 0.0f;
+				MusuiGUI::DropDownMenus[index].isActive = false;
+				MusuiGUI::DropDownMenus[index].opacityHover = 0.0f;
 				value = op;
 			}
 			else {
-				FlarialGUI::lerp(FlarialGUI::DropDownMenus[index].opacityHover, 1.0f, 0.25 * FlarialGUI::frameFactor);
+				MusuiGUI::lerp(MusuiGUI::DropDownMenus[index].opacityHover, 1.0f, 0.25 * MusuiGUI::frameFactor);
 			}
-			FlarialGUI::DropDownMenus[index].hoveredIndex = counter;
+			MusuiGUI::DropDownMenus[index].hoveredIndex = counter;
 		}
 		counter++;
 	}
 
-	FlarialGUI::lerp(FlarialGUI::DropDownMenus[index].yHover, y + (FlarialGUI::DropDownMenus[index].hoveredIndex * childHeights) - (counter * 0.1f) + 5, 0.25 * FlarialGUI::frameFactor);
+	MusuiGUI::lerp(MusuiGUI::DropDownMenus[index].yHover, y + (MusuiGUI::DropDownMenus[index].hoveredIndex * childHeights) - (counter * 0.1f) + 5, 0.25 * MusuiGUI::frameFactor);
 
-	if (FlarialGUI::DropDownMenus[index].yHover >= originalY && (originalY + percHeight + maxHeight) >= FlarialGUI::DropDownMenus[index].yHover) {
-		hoveredChildCol.a = FlarialGUI::DropDownMenus[index].opacityHover;
-		if (FlarialGUI::DropDownMenus[index].hoveredIndex == options.size() - 1) {
-			FlarialGUI::RoundedRect(x + offset, FlarialGUI::DropDownMenus[index].yHover, hoveredChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), lastChildHeight, 0, 0);
-			FlarialGUI::RoundedRect(x + offset, FlarialGUI::DropDownMenus[index].yHover, hoveredChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, round.x, round.y);
+	if (MusuiGUI::DropDownMenus[index].yHover >= originalY && (originalY + percHeight + maxHeight) >= MusuiGUI::DropDownMenus[index].yHover) {
+		hoveredChildCol.a = MusuiGUI::DropDownMenus[index].opacityHover;
+		if (MusuiGUI::DropDownMenus[index].hoveredIndex == options.size() - 1) {
+			MusuiGUI::RoundedRect(x + offset, MusuiGUI::DropDownMenus[index].yHover, hoveredChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), lastChildHeight, 0, 0);
+			MusuiGUI::RoundedRect(x + offset, MusuiGUI::DropDownMenus[index].yHover, hoveredChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, round.x, round.y);
 		}
 		else {
-			FlarialGUI::RoundedRect(x + offset, FlarialGUI::DropDownMenus[index].yHover, hoveredChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, 0, 0);
+			MusuiGUI::RoundedRect(x + offset, MusuiGUI::DropDownMenus[index].yHover, hoveredChildCol, Constraints::SpacingConstraint(1.55, curTextWidth), childHeights, 0, 0);
 		}
 	}
 
 	counter = 1;
 
 	for (const std::string& op : options) {
-		if (op == FlarialGUI::DropDownMenus[index].selected) continue;
+		if (op == MusuiGUI::DropDownMenus[index].selected) continue;
 
 		float curY = y + (counter * childHeights) - (counter * 0.1f) + 5;
 
 		if (curY < originalY) continue;
 
-		FlarialGUI::FlarialTextWithFont(x + offset + Constraints::SpacingConstraint(0.1, curTextWidth),
+		MusuiGUI::MusuiTextWithFont(x + offset + Constraints::SpacingConstraint(0.1, curTextWidth),
 			counter == options.size() - 1 ? curY - 2.5f : curY - 4.0f, to_wide(op).c_str(),
 			Constraints::SpacingConstraint(1.55, curTextWidth), percHeight,
 			DWRITE_TEXT_ALIGNMENT_LEADING,
@@ -1262,17 +1262,17 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 		counter++;
 	}
 
-	// if (FlarialGUI::DropDownMenus[index].isActive) MC::mousebutton = MouseButton::None;
+	// if (MusuiGUI::DropDownMenus[index].isActive) MC::mousebutton = MouseButton::None;
 
 	y = originalY;
 
-	FlarialGUI::RoundedRect(x, y, FlarialGUI::DropDownMenus[index].curColor, Constraints::SpacingConstraint(1.55, textWidth), percHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x, y, MusuiGUI::DropDownMenus[index].curColor, Constraints::SpacingConstraint(1.55, textWidth), percHeight, round.x, round.x);
 
-	FlarialGUI::FlarialTextWithFont(x + Constraints::SpacingConstraint(0.1, textWidth), y, FlarialGUI::to_wide(value).c_str(),
+	MusuiGUI::MusuiTextWithFont(x + Constraints::SpacingConstraint(0.1, textWidth), y, MusuiGUI::to_wide(value).c_str(),
 		Constraints::SpacingConstraint(1.55, textWidth), percHeight,
 		DWRITE_TEXT_ALIGNMENT_LEADING, Constraints::SpacingConstraint(1.0, textWidth),
 		DWRITE_FONT_WEIGHT_NORMAL);
-	FlarialGUI::FlarialTextWithFont(x + Constraints::SpacingConstraint(1.70, textWidth), y, FlarialGUI::to_wide(label).c_str(),
+	MusuiGUI::MusuiTextWithFont(x + Constraints::SpacingConstraint(1.70, textWidth), y, MusuiGUI::to_wide(label).c_str(),
 		Constraints::SpacingConstraint(3, textWidth), percHeight,
 		DWRITE_TEXT_ALIGNMENT_LEADING, Constraints::SpacingConstraint(1.00, textWidth),
 		DWRITE_FONT_WEIGHT_NORMAL);
@@ -1281,7 +1281,7 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 	float ix = x + Constraints::SpacingConstraint(1.5, textWidth) - is * 1.2;
 	float iy = y + Constraints::SpacingConstraint(0.28, percHeight);
 
-	std::string imageName = "\\Flarial\\assets\\down.png";
+	std::string imageName = "\\Musui\\assets\\down.png";
 
 	if (ImagesClass::eimages[imageName] == nullptr) {
 		std::string among = Utils::getRoamingPath() + "\\" + imageName;
@@ -1299,7 +1299,7 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 	}
 
 	D2D1_POINT_2F rotationCenter = D2D1::Point2F(rectf.left + is / 2, rectf.top + is / 2);
-	D2D1_MATRIX_3X2_F rotationMatrix = D2D1::Matrix3x2F::Rotation(FlarialGUI::DropDownMenus[index].rotation, rotationCenter);
+	D2D1_MATRIX_3X2_F rotationMatrix = D2D1::Matrix3x2F::Rotation(MusuiGUI::DropDownMenus[index].rotation, rotationCenter);
 
 	D2D::context->SetTransform(rotationMatrix);
 
@@ -1307,16 +1307,16 @@ FlarialGUI::Dropdown(int index, float x, float y, const std::vector<std::string>
 
 	D2D::context->SetTransform(oldTransform);
 
-	FlarialGUI::RoundedRect(ix - 8, iy - 5, FlarialGUI::DropDownMenus[index].isActive ? D2D1::ColorF(D2D1::ColorF::White) : D2D1::ColorF(192.0f / 255.0f, 133.0f / 255.0f, 142.0f / 255.0f), 1, is + 8, 0, 0);
+	MusuiGUI::RoundedRect(ix - 8, iy - 5, MusuiGUI::DropDownMenus[index].isActive ? D2D1::ColorF(D2D1::ColorF::White) : D2D1::ColorF(192.0f / 255.0f, 133.0f / 255.0f, 142.0f / 255.0f), 1, is + 8, 0, 0);
 
-	FlarialGUI::DropDownMenus[index].selected = value;
+	MusuiGUI::DropDownMenus[index].selected = value;
 
 	if (isAdditionalY) SetIsInAdditionalYMode();
 
-	return FlarialGUI::DropDownMenus[index].selected;
+	return MusuiGUI::DropDownMenus[index].selected;
 };
 
-void FlarialGUI::RoundedRectWithImageAndText(int index, float x, float y, const float width, const float height, const D2D1_COLOR_F color, const std::string imagePath, const float imageWidth, const float imageHeight, const wchar_t* text)
+void MusuiGUI::RoundedRectWithImageAndText(int index, float x, float y, const float width, const float height, const D2D1_COLOR_F color, const std::string imagePath, const float imageWidth, const float imageHeight, const wchar_t* text)
 {
 
 	float imageY = y;
@@ -1328,7 +1328,7 @@ void FlarialGUI::RoundedRectWithImageAndText(int index, float x, float y, const 
 
 	ID2D1SolidColorBrush* brush;
 
-	brush = FlarialGUI::getBrush(color);
+	brush = MusuiGUI::getBrush(color);
 
 	D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(D2D1::RectF(x, y, x + width, y + height), 5, 5);
 
@@ -1342,7 +1342,7 @@ void FlarialGUI::RoundedRectWithImageAndText(int index, float x, float y, const 
 	if (ImagesClass::eimages[imagePath] == nullptr) {
 
 		std::string among = Utils::getRoamingPath() + "\\" + imagePath;
-		FlarialGUI::LoadImageFromFile(to_wide(among).c_str(), &ImagesClass::eimages[imagePath]);
+		MusuiGUI::LoadImageFromFile(to_wide(among).c_str(), &ImagesClass::eimages[imagePath]);
 
 	}
 	else if (ImagesClass::eimages[imagePath] != nullptr) {
@@ -1352,7 +1352,7 @@ void FlarialGUI::RoundedRectWithImageAndText(int index, float x, float y, const 
 
 		if (CursorInRect(x, y, width, height)) {
 
-			FlarialGUI::lerp(rotationAngles[index], rotationAngles[index] + 15, 0.5f * FlarialGUI::frameFactor);
+			MusuiGUI::lerp(rotationAngles[index], rotationAngles[index] + 15, 0.5f * MusuiGUI::frameFactor);
 		}
 
 
@@ -1379,7 +1379,7 @@ void FlarialGUI::RoundedRectWithImageAndText(int index, float x, float y, const 
 	IDWriteFactory *writeFactory;
 	DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), reinterpret_cast<IUnknown **>(&writeFactory));
 	IDWriteTextFormat *textFormat;
-	FlarialGUI::writeFactory->CreateTextFormat(LClient::settings.getSettingByName<std::string>("fontname")->value, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 14.0f, L"", &textFormat);
+	MusuiGUI::writeFactory->CreateTextFormat(LClient::settings.getSettingByName<std::string>("fontname")->value, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 14.0f, L"", &textFormat);
 	textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
@@ -1388,14 +1388,14 @@ void FlarialGUI::RoundedRectWithImageAndText(int index, float x, float y, const 
 
 	/*
 	textFormat->Release();
-	FlarialGUI::writeFactory->Release();*/
+	MusuiGUI::writeFactory->Release();*/
 }
 
-void FlarialGUI::KeybindSelector(const int index, float x, float y, std::string& keybind) {
+void MusuiGUI::KeybindSelector(const int index, float x, float y, std::string& keybind) {
 
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -1422,20 +1422,20 @@ void FlarialGUI::KeybindSelector(const int index, float x, float y, std::string&
 		if (timeDifference.count() > 2000) KeybindSelectors[index].isActive = false;
 	}
 
-	KeybindSelectors[index].curColor = FlarialGUI::LerpColor(KeybindSelectors[index].curColor, col, 0.1f * FlarialGUI::frameFactor);
+	KeybindSelectors[index].curColor = MusuiGUI::LerpColor(KeybindSelectors[index].curColor, col, 0.1f * MusuiGUI::frameFactor);
 
 	std::string text;
 
 	if (KeybindSelectors[index].isActive) {
-		if (FlarialGUI::currentKeybind != "nothing") {
+		if (MusuiGUI::currentKeybind != "nothing") {
 
 			KeybindSelectors[index].oldShi = keybind;
-			keybind = FlarialGUI::currentKeybind;
+			keybind = MusuiGUI::currentKeybind;
 			KeybindSelectors[index].newShi = keybind;
 
 		}
 		else {
-			FlarialGUI::currentKeybind = "";
+			MusuiGUI::currentKeybind = "";
 			keybind = "";
 		}
 	}
@@ -1443,12 +1443,12 @@ void FlarialGUI::KeybindSelector(const int index, float x, float y, std::string&
 	text = keybind;
 
 	if (isAdditionalY) UnSetIsInAdditionalYMode();
-	FlarialGUI::RoundedRect(x, y, KeybindSelectors[index].curColor, percWidth, percHeight, round.x, round.x);
+	MusuiGUI::RoundedRect(x, y, KeybindSelectors[index].curColor, percWidth, percHeight, round.x, round.x);
 
-	FlarialGUI::FlarialTextWithFont(x, y, FlarialGUI::to_wide(text).c_str(), percWidth, percHeight, DWRITE_TEXT_ALIGNMENT_CENTER, textWidth, DWRITE_FONT_WEIGHT_NORMAL);
+	MusuiGUI::MusuiTextWithFont(x, y, MusuiGUI::to_wide(text).c_str(), percWidth, percHeight, DWRITE_TEXT_ALIGNMENT_CENTER, textWidth, DWRITE_FONT_WEIGHT_NORMAL);
 
 
-	FlarialGUI::FlarialTextWithFont(x + Constraints::SpacingConstraint(1.25, textWidth / 2.0f), y,
+	MusuiGUI::MusuiTextWithFont(x + Constraints::SpacingConstraint(1.25, textWidth / 2.0f), y,
 		L"Keybind (Hold for 2 seconds)",
 		Constraints::SpacingConstraint(6.9f, textWidth), percHeight,
 		DWRITE_TEXT_ALIGNMENT_LEADING, textWidth,
@@ -1473,7 +1473,7 @@ void FlarialGUI::KeybindSelector(const int index, float x, float y, std::string&
 
 }
 
-void FlarialGUI::ColorPicker(const int index, float x, const float y, std::string& hex, float& opacity, bool& rgb) {
+void MusuiGUI::ColorPicker(const int index, float x, const float y, std::string& hex, float& opacity, bool& rgb) {
 
 	// Accepts hex, so for e.g. fps counter bg color wants to be changed then you'd have to give a modifyable hex value
 	// Preferably save every color in config as a hex (string)
@@ -1483,14 +1483,14 @@ void FlarialGUI::ColorPicker(const int index, float x, const float y, std::strin
 	// then load the setting as uint32_t instead of string
 	// but when saving, it should be converted to string.
 
-	if (FlarialGUI::TextBoxes[index].isActive) {
-		if (FlarialGUI::TextBoxes[index].isAt1) FlarialGUI::lerp(FlarialGUI::TextBoxes[index].cursorOpac, -1.0f, 0.05f * FlarialGUI::frameFactor);
-		else FlarialGUI::lerp(FlarialGUI::TextBoxes[index].cursorOpac, 2.0f, 0.05f * FlarialGUI::frameFactor);
+	if (MusuiGUI::TextBoxes[index].isActive) {
+		if (MusuiGUI::TextBoxes[index].isAt1) MusuiGUI::lerp(MusuiGUI::TextBoxes[index].cursorOpac, -1.0f, 0.05f * MusuiGUI::frameFactor);
+		else MusuiGUI::lerp(MusuiGUI::TextBoxes[index].cursorOpac, 2.0f, 0.05f * MusuiGUI::frameFactor);
 	}
-	else FlarialGUI::TextBoxes[index].cursorOpac = 0;
+	else MusuiGUI::TextBoxes[index].cursorOpac = 0;
 
-	if (FlarialGUI::TextBoxes[index].cursorOpac > 1) FlarialGUI::TextBoxes[index].isAt1 = true;
-	if (FlarialGUI::TextBoxes[index].cursorOpac < 0) FlarialGUI::TextBoxes[index].isAt1 = false;
+	if (MusuiGUI::TextBoxes[index].cursorOpac > 1) MusuiGUI::TextBoxes[index].isAt1 = true;
+	if (MusuiGUI::TextBoxes[index].cursorOpac < 0) MusuiGUI::TextBoxes[index].isAt1 = false;
 
 	Vec2<float> round = Constraints::RoundingConstraint(13, 13);
 
@@ -1499,13 +1499,13 @@ void FlarialGUI::ColorPicker(const int index, float x, const float y, std::strin
 	D2D1_COLOR_F baseColor = colors_primary4_rgb ? rgbColor : colors_primary4;
 	baseColor.a = o_colors_primary4;
 
-	FlarialGUI::RoundedRect(x, y + s * 0.15f, baseColor, s * 4.125f, s, round.x, round.x);
+	MusuiGUI::RoundedRect(x, y + s * 0.15f, baseColor, s * 4.125f, s, round.x, round.x);
 
 	round = Constraints::RoundingConstraint(10, 10);
 
 	if (rgb) {
-		FlarialGUI::Image(
-			"\\Flarial\\assets\\rgb.png",
+		MusuiGUI::Image(
+			"\\Musui\\assets\\rgb.png",
 			D2D1::RectF(
 				x + Constraints::SpacingConstraint(0.1, s),
 				y + s * 0.21f,
@@ -1515,8 +1515,8 @@ void FlarialGUI::ColorPicker(const int index, float x, const float y, std::strin
 		);
 	}
 	else {
-		D2D1_COLOR_F color = FlarialGUI::HexToColorF(hex);
-		FlarialGUI::RoundedRect(x + Constraints::SpacingConstraint(0.1, s), y + s * 0.21f, color, s * 0.85f, s * 0.85f, round.x, round.x);
+		D2D1_COLOR_F color = MusuiGUI::HexToColorF(hex);
+		MusuiGUI::RoundedRect(x + Constraints::SpacingConstraint(0.1, s), y + s * 0.21f, color, s * 0.85f, s * 0.85f, round.x, round.x);
 	}
 
 	round = Constraints::RoundingConstraint(11.5, 11.5);
@@ -1527,14 +1527,14 @@ void FlarialGUI::ColorPicker(const int index, float x, const float y, std::strin
 
 	col.a = TextBoxes[index].isActive ? o_colors_primary1 : o_colors_primary3;
 
-	FlarialGUI::RoundedRect(x + Constraints::SpacingConstraint(1.05, s), y + s * 0.23f, col, s * 3.f, s * 0.82f, round.x, round.x);
+	MusuiGUI::RoundedRect(x + Constraints::SpacingConstraint(1.05, s), y + s * 0.23f, col, s * 3.f, s * 0.82f, round.x, round.x);
 
 	std::string text;
-	hex = FlarialGUI::TextBox(index, hex, 6, x + Constraints::SpacingConstraint(1.05, s), y + s * 0.23f, s * 3.f, s * 0.82f);
+	hex = MusuiGUI::TextBox(index, hex, 6, x + Constraints::SpacingConstraint(1.05, s), y + s * 0.23f, s * 3.f, s * 0.82f);
 
 	text = "#" + hex;
 
-	IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(FlarialGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, s * 4.0f, DWRITE_FONT_WEIGHT_REGULAR, s * 3.f + 100, s * 0.82f);
+	IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(MusuiGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, s * 4.0f, DWRITE_FONT_WEIGHT_REGULAR, s * 3.f + 100, s * 0.82f);
 
 	DWRITE_TEXT_METRICS textMetrics;
 	textLayout->GetMetrics(&textMetrics);
@@ -1543,15 +1543,15 @@ void FlarialGUI::ColorPicker(const int index, float x, const float y, std::strin
 	D2D1_COLOR_F cursorCol = colors_primary2_rgb ? rgbColor : colors_primary2;
 	cursorCol.a = o_colors_primary2;
 
-	cursorCol.a = FlarialGUI::TextBoxes[index].cursorOpac;
+	cursorCol.a = MusuiGUI::TextBoxes[index].cursorOpac;
 
-	FlarialGUI::lerp(FlarialGUI::TextBoxes[index].cursorX, x + Constraints::SpacingConstraint(1.05f, s) + textMetrics.widthIncludingTrailingWhitespace + Constraints::RelativeConstraint(0.055f), 0.420f * FlarialGUI::frameFactor);
+	MusuiGUI::lerp(MusuiGUI::TextBoxes[index].cursorX, x + Constraints::SpacingConstraint(1.05f, s) + textMetrics.widthIncludingTrailingWhitespace + Constraints::RelativeConstraint(0.055f), 0.420f * MusuiGUI::frameFactor);
 
-	if (FlarialGUI::TextBoxes[index].cursorX > x)
-		FlarialGUI::RoundedRect(FlarialGUI::TextBoxes[index].cursorX, y + Constraints::RelativeConstraint(0.1f) / 2.0f, cursorCol, Constraints::RelativeConstraint(0.01f), s * 0.82f - Constraints::RelativeConstraint(0.025f), 0, 0);
-	// todo: FlarialGUI::to_wide(text).c_str() make this redundend
-	FlarialGUI::FlarialTextWithFont(x + Constraints::SpacingConstraint(1.35f, s), y * 1.006f,
-		FlarialGUI::to_wide(text).c_str(), s * 4.3f, s * 1.1f,
+	if (MusuiGUI::TextBoxes[index].cursorX > x)
+		MusuiGUI::RoundedRect(MusuiGUI::TextBoxes[index].cursorX, y + Constraints::RelativeConstraint(0.1f) / 2.0f, cursorCol, Constraints::RelativeConstraint(0.01f), s * 0.82f - Constraints::RelativeConstraint(0.025f), 0, 0);
+	// todo: MusuiGUI::to_wide(text).c_str() make this redundend
+	MusuiGUI::MusuiTextWithFont(x + Constraints::SpacingConstraint(1.35f, s), y * 1.006f,
+		MusuiGUI::to_wide(text).c_str(), s * 4.3f, s * 1.1f,
 		DWRITE_TEXT_ALIGNMENT_LEADING, s * 4.0f, DWRITE_FONT_WEIGHT_NORMAL);
 
 	float clickingY = y;
@@ -1566,7 +1566,7 @@ void FlarialGUI::ColorPicker(const int index, float x, const float y, std::strin
 
 }
 
-HSV FlarialGUI::RGBtoHSV(D2D1_COLOR_F rgb) {
+HSV MusuiGUI::RGBtoHSV(D2D1_COLOR_F rgb) {
 	float r = rgb.r;
 	float g = rgb.g;
 	float b = rgb.b;
@@ -1614,7 +1614,7 @@ HSV FlarialGUI::RGBtoHSV(D2D1_COLOR_F rgb) {
 	return out;
 };
 
-D2D1::ColorF FlarialGUI::HSVtoColorF(float H, float s, float v) {
+D2D1::ColorF MusuiGUI::HSVtoColorF(float H, float s, float v) {
 	if (H > 360 || H < 0 || s>1 || s < 0 || v>1 || v < 0) {
 		return D2D1::ColorF(0, 0, 0);
 	}
@@ -1644,10 +1644,10 @@ D2D1::ColorF FlarialGUI::HSVtoColorF(float H, float s, float v) {
 	return D2D1::ColorF(r + m, g + m, b + m);
 }
 
-void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, bool& rgb) {
+void MusuiGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, bool& rgb) {
 	if (ColorPickers[index].isActive) {
 		// 75% opacity black rect
-		FlarialGUI::RoundedRect(0, 0, D2D1::ColorF(D2D1::ColorF::Black, 0.75),
+		MusuiGUI::RoundedRect(0, 0, D2D1::ColorF(D2D1::ColorF::Black, 0.75),
 			Constraints::RelativeConstraint(1.5, "width", true),
 			Constraints::RelativeConstraint(1.5, "height", true), 0, 0);
 
@@ -1665,10 +1665,10 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 		D2D1_COLOR_F textCol = colors_text_rgb ? rgbColor : colors_text;
 		textCol.a = o_colors_text;
 
-		FlarialGUI::RoundedHollowRect(center.x, center.y, Constraints::RelativeConstraint(0.01, "height", true), colorThing, rectwidth, rectheight, round.x, round.x);
-		FlarialGUI::RoundedRect(center.x, center.y, anotherColor, rectwidth, rectheight, round.x, round.x);
+		MusuiGUI::RoundedHollowRect(center.x, center.y, Constraints::RelativeConstraint(0.01, "height", true), colorThing, rectwidth, rectheight, round.x, round.x);
+		MusuiGUI::RoundedRect(center.x, center.y, anotherColor, rectwidth, rectheight, round.x, round.x);
 
-		FlarialGUI::PushSize(center.x, center.y, rectwidth, rectheight);
+		MusuiGUI::PushSize(center.x, center.y, rectwidth, rectheight);
 
 		float x = Constraints::PercentageConstraint(0.07, "left");
 		float y = Constraints::PercentageConstraint(0.10, "top");
@@ -1712,7 +1712,7 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 
 		// color preview square
 
-		FlarialGUI::Image("\\Flarial\\assets\\transparent.png", D2D1::RectF(
+		MusuiGUI::Image("\\Musui\\assets\\transparent.png", D2D1::RectF(
 			x + 1,
 			y + 1,
 			x + hexPreviewSize - 1,
@@ -1722,7 +1722,7 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 
 		// previous color preview square
 
-		FlarialGUI::Image("\\Flarial\\assets\\transparent.png", D2D1::RectF(
+		MusuiGUI::Image("\\Musui\\assets\\transparent.png", D2D1::RectF(
 			x + 1,
 			y + 1 + hexPreviewSize + Constraints::SpacingConstraint(0.1, hexPreviewSize),
 			x + hexPreviewSize - 1,
@@ -1735,7 +1735,7 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 		D2D1_GRADIENT_STOP gradientStops[69];
 
 		for (int j = 0; j <= 360; j += 20) {
-			gradientStops[j / 20].color = FlarialGUI::HSVtoColorF(j, 1.0f, 1.0f);
+			gradientStops[j / 20].color = MusuiGUI::HSVtoColorF(j, 1.0f, 1.0f);
 			gradientStops[j / 20].position = (float)j / 360.0f;
 		}
 
@@ -1962,7 +1962,7 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 
 		if (Toggle(123, x, y, rgb, true)) rgb = !rgb;
 
-		FlarialTextWithFont(x + Constraints::SpacingConstraint(0.60, Constraints::RelativeConstraint(0.12, "height", true)), y, L"Chroma",
+		MusuiTextWithFont(x + Constraints::SpacingConstraint(0.60, Constraints::RelativeConstraint(0.12, "height", true)), y, L"Chroma",
 			Constraints::RelativeConstraint(0.12, "height", true) * 3.0f, Constraints::RelativeConstraint(0.029, "height", true), DWRITE_TEXT_ALIGNMENT_LEADING,
 			Constraints::RelativeConstraint(0.12, "height", true),
 			DWRITE_FONT_WEIGHT_NORMAL);
@@ -1985,24 +1985,24 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 		 */
 
 		 /*
-		 FlarialGUI::FlarialTextWithFont(x + spacing, y - spacing * 1.45, L"Color Sliders",
+		 MusuiGUI::MusuiTextWithFont(x + spacing, y - spacing * 1.45, L"Color Sliders",
 										 Constraints::RelativeConstraint(1, "width"),
 										 Constraints::RelativeConstraint(0.2, "width"), DWRITE_TEXT_ALIGNMENT_JUSTIFIED,
 										 Constraints::RelativeConstraint(0.5, "width"), DWRITE_FONT_WEIGHT_NORMAL);
 
 		 spacing *= 0.90f;
 
-		 float percentR = FlarialGUI::Slider(index + 10, x, y, color.r * 255.0f, 255.0f, 0, 0);
+		 float percentR = MusuiGUI::Slider(index + 10, x, y, color.r * 255.0f, 255.0f, 0, 0);
 
-		 float percentG = FlarialGUI::Slider(index + 11, x, y + spacing, color.g * 255.0f, 255.0f, 0, 0);
+		 float percentG = MusuiGUI::Slider(index + 11, x, y + spacing, color.g * 255.0f, 255.0f, 0, 0);
 
-		 float percentB = FlarialGUI::Slider(index + 12, x, y + spacing * 2, color.b * 255.0f, 255.0f, 0, 0);
+		 float percentB = MusuiGUI::Slider(index + 12, x, y + spacing * 2, color.b * 255.0f, 255.0f, 0, 0);
 
-		 opacity = FlarialGUI::Slider(index + 200, x, y + spacing * 3, opacity, 1.0, 0, 0);
+		 opacity = MusuiGUI::Slider(index + 200, x, y + spacing * 3, opacity, 1.0, 0, 0);
 
 		 float buttonWidth = Constraints::RelativeConstraint(0.35f, "width");
 		 float buttonHeight = Constraints::RelativeConstraint(0.20f, "height");
-		 if (FlarialGUI::RoundedButton(0, x + spacing * 1.45f, y + spacing * 4.12f, D2D1::ColorF(32.0f / 255.0f, 26.0f / 255.0f, 27.0f / 255.0f), D2D1::ColorF(D2D1::ColorF::White), L"Close", buttonWidth, buttonHeight, round.x, round.x)) ColorPickers[index].isActive = false;
+		 if (MusuiGUI::RoundedButton(0, x + spacing * 1.45f, y + spacing * 4.12f, D2D1::ColorF(32.0f / 255.0f, 26.0f / 255.0f, 27.0f / 255.0f), D2D1::ColorF(D2D1::ColorF::White), L"Close", buttonWidth, buttonHeight, round.x, round.x)) ColorPickers[index].isActive = false;
 
 
 
@@ -2010,12 +2010,12 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 		 color.g = percentG / 255.0f;
 		 color.b = percentB / 255.0f;
 
-		 hex = FlarialGUI::ColorFToHex(color);
+		 hex = MusuiGUI::ColorFToHex(color);
 		 */
 
-		FlarialGUI::PopSize();
+		MusuiGUI::PopSize();
 
-		FlarialGUI::UnsetWindowRect();
+		MusuiGUI::UnsetWindowRect();
 
 		// rect containing shit
 
@@ -2036,7 +2036,7 @@ void FlarialGUI::ColorPickerWindow(int index, std::string& hex, float& opacity, 
 	}
 }
 
-D2D1::ColorF FlarialGUI::HexToColorF(const std::string& hexString)
+D2D1::ColorF MusuiGUI::HexToColorF(const std::string& hexString)
 {
 	if (hexString.length() != 6)
 	{
@@ -2069,7 +2069,7 @@ D2D1::ColorF FlarialGUI::HexToColorF(const std::string& hexString)
 
 
 
-std::string FlarialGUI::ColorFToHex(const D2D1_COLOR_F& color)
+std::string MusuiGUI::ColorFToHex(const D2D1_COLOR_F& color)
 {
 	// Convert the color components from the range [0.0, 1.0] to [0, 255]
 	uint8_t red = static_cast<uint8_t>(color.r * 255.0f);
@@ -2084,7 +2084,7 @@ std::string FlarialGUI::ColorFToHex(const D2D1_COLOR_F& color)
 }
 
 
-void FlarialGUI::FlarialText(float x, float y, const wchar_t* text, float width, const float height,
+void MusuiGUI::MusuiText(float x, float y, const wchar_t* text, float width, const float height,
 	const DWRITE_TEXT_ALIGNMENT alignment)
 {
 	D2D1_COLOR_F color = colors_text_rgb ? rgbColor : colors_text;
@@ -2093,7 +2093,7 @@ void FlarialGUI::FlarialText(float x, float y, const wchar_t* text, float width,
 	if (isInScrollView) y += scrollpos;
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -2101,31 +2101,31 @@ void FlarialGUI::FlarialText(float x, float y, const wchar_t* text, float width,
 
 	if (isInScrollView && !isRectInRect(ScrollViewRect, D2D1::RectF(x, y, x + width, y + height))) return;
 
-	//IDWriteTextFormat* textFormat = FlarialGUI::getTextFormat(Client::settings.getSettingByName<std::string>("fontname")->value, , DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, alignment);
-	IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(text, alignment, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, width, DWRITE_FONT_WEIGHT_REGULAR, width, height);
+	//IDWriteTextFormat* textFormat = MusuiGUI::getTextFormat(Client::settings.getSettingByName<std::string>("fontname")->value, , DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, alignment);
+	IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(text, alignment, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, width, DWRITE_FONT_WEIGHT_REGULAR, width, height);
 
 	//D2D1_RECT_F textRect = D2D1::RectF(x, y, x + width, y + height);
-	D2D::context->DrawTextLayout(D2D1::Point2F(x, y), textLayout, FlarialGUI::getBrush(color));
+	D2D::context->DrawTextLayout(D2D1::Point2F(x, y), textLayout, MusuiGUI::getBrush(color));
 
 }
 
-void FlarialGUI::FlarialTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
+void MusuiGUI::MusuiTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
 	const DWRITE_TEXT_ALIGNMENT alignment, const float fontSize,
 	const DWRITE_FONT_WEIGHT weight, bool moduleFont)
 {
 	D2D1_COLOR_F color = colors_text_rgb ? rgbColor : colors_text;
 	color.a = o_colors_text;
 
-	FlarialTextWithFont(x, y, text, width, height, alignment, fontSize, weight, color, moduleFont);
+	MusuiTextWithFont(x, y, text, width, height, alignment, fontSize, weight, color, moduleFont);
 }
 // TODO SOS NO CACHE
-void FlarialGUI::FlarialTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
+void MusuiGUI::MusuiTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
 	const DWRITE_TEXT_ALIGNMENT alignment, const float fontSize,
 	const DWRITE_FONT_WEIGHT weight, D2D1_COLOR_F color, bool moduleFont){
 
 	if (shouldAdditionalY) {
 		for (int i = 0; i < highestAddIndexes + 1; i++) {
-			if (FlarialGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
+			if (MusuiGUI::DropDownMenus[i].isActive && i <= additionalIndex) {
 				y += additionalY[i];
 			}
 		}
@@ -2134,12 +2134,12 @@ void FlarialGUI::FlarialTextWithFont(float x, float y, const wchar_t* text, cons
 
 	if (isInScrollView && !isRectInRect(ScrollViewRect, D2D1::RectF(x, y, x + width, y + height))) return;
 
-	IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(text, alignment, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, fontSize, weight, width, height, moduleFont);
-	D2D::context->DrawTextLayout(D2D1::Point2F(x, y), textLayout, FlarialGUI::getBrush(color));
+	IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(text, alignment, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, fontSize, weight, width, height, moduleFont);
+	D2D::context->DrawTextLayout(D2D1::Point2F(x, y), textLayout, MusuiGUI::getBrush(color));
 
 }
 
-void FlarialGUI::Image(const std::string imageName, D2D1_RECT_F rect)
+void MusuiGUI::Image(const std::string imageName, D2D1_RECT_F rect)
 {
 
 	if (isInScrollView) {
@@ -2154,13 +2154,13 @@ void FlarialGUI::Image(const std::string imageName, D2D1_RECT_F rect)
 	std::string among = Utils::getRoamingPath() + "\\" + imageName;
 
 	if (ImagesClass::eimages[imageName] == nullptr)
-		LoadImageFromFile(FlarialGUI::to_wide(among).c_str(), &ImagesClass::eimages[imageName]);
+		LoadImageFromFile(MusuiGUI::to_wide(among).c_str(), &ImagesClass::eimages[imageName]);
 
 	// Draw image
 	D2D1_RECT_F imageRect = D2D1::RectF(rect.left, rect.top, rect.right, rect.bottom);
 	D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
 
-	if (imageName == "\\Flarial\\assets\\transparent.png") interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
+	if (imageName == "\\Musui\\assets\\transparent.png") interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
 
 	if (isInScrollView) {
 		if (isRectInRect(ScrollViewRect, rect))
@@ -2173,7 +2173,7 @@ void FlarialGUI::Image(const std::string imageName, D2D1_RECT_F rect)
 	}
 }
 
-void FlarialGUI::LoadImageFromFile(const wchar_t* filename, ID2D1Bitmap** bitmap)
+void MusuiGUI::LoadImageFromFile(const wchar_t* filename, ID2D1Bitmap** bitmap)
 {
 	// Initialize COM
 	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
@@ -2204,22 +2204,22 @@ void FlarialGUI::LoadImageFromFile(const wchar_t* filename, ID2D1Bitmap** bitmap
 	imagingFactory->Release();
 }
 
-void FlarialGUI::SetScrollView(float x, float y, float width, float height)
+void MusuiGUI::SetScrollView(float x, float y, float width, float height)
 {
-	FlarialGUI::isInScrollView = true;
+	MusuiGUI::isInScrollView = true;
 	D2D1_RECT_F clipRect = D2D1::RectF(x, y, x + width, y + height);
 	ScrollViewRect = clipRect;
 	D2D::context->PushAxisAlignedClip(&clipRect, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 
 }
 
-void FlarialGUI::UnsetScrollView()
+void MusuiGUI::UnsetScrollView()
 {
-	FlarialGUI::isInScrollView = false;
+	MusuiGUI::isInScrollView = false;
 	D2D::context->PopAxisAlignedClip();
 }
 
-void FlarialGUI::ScrollBar(float x, float y, float width, float height, float radius)
+void MusuiGUI::ScrollBar(float x, float y, float width, float height, float radius)
 {
 	float whiteY;
 
@@ -2232,7 +2232,7 @@ void FlarialGUI::ScrollBar(float x, float y, float width, float height, float ra
 		GUIMouseListener::accumilatedPos = 0;
 	}
 
-	FlarialGUI::lerp(FlarialGUI::scrollpos, GUIMouseListener::accumilatedPos, 0.30f * FlarialGUI::frameFactor);
+	MusuiGUI::lerp(MusuiGUI::scrollpos, GUIMouseListener::accumilatedPos, 0.30f * MusuiGUI::frameFactor);
 
 	/*
 	// Draw the gray bar
@@ -2250,7 +2250,7 @@ void FlarialGUI::ScrollBar(float x, float y, float width, float height, float ra
 	 */
 }
 
-void FlarialGUI::SetWindowRect(float x, float y, float width, float height, int currentNum, float fixer)
+void MusuiGUI::SetWindowRect(float x, float y, float width, float height, int currentNum, float fixer)
 {
 	isInWindowRect = true;
 
@@ -2300,12 +2300,12 @@ void FlarialGUI::SetWindowRect(float x, float y, float width, float height, int 
 	WindowRects[currentNum].percentageY = WindowRects[currentNum].movedY / MC::windowSize.y;
 }
 
-void FlarialGUI::UnsetWindowRect()
+void MusuiGUI::UnsetWindowRect()
 {
 	isInWindowRect = false;
 }
 
-Vec2<float> FlarialGUI::CalculateMovedXY(float x, float y, int num, float rectWidth, float rectHeight)
+Vec2<float> MusuiGUI::CalculateMovedXY(float x, float y, int num, float rectWidth, float rectHeight)
 {
 	if (isInWindowRect && WindowRects[num].hasBeenMoved)
 	{
@@ -2327,7 +2327,7 @@ Vec2<float> FlarialGUI::CalculateMovedXY(float x, float y, int num, float rectWi
 	return { x, y };
 }
 
-Vec2<float> FlarialGUI::GetCenterXY(float rectWidth, float rectHeight)
+Vec2<float> MusuiGUI::GetCenterXY(float rectWidth, float rectHeight)
 {
 	Vec2<float> xy;
 	xy.x = (D2D::context->GetSize().width - rectWidth) / 2.0f;
@@ -2336,7 +2336,7 @@ Vec2<float> FlarialGUI::GetCenterXY(float rectWidth, float rectHeight)
 }
 
 
-void FlarialGUI::ResetShit() {
+void MusuiGUI::ResetShit() {
 
 	// Reset the variables to their initial values or desired values here
 	for (auto& i : WindowRects) {
@@ -2363,7 +2363,7 @@ void FlarialGUI::ResetShit() {
 
 }
 
-void FlarialGUI::ApplyCombinedDeepFry()
+void MusuiGUI::ApplyCombinedDeepFry()
 {
 
 	if (SwapchainHook::init) {
@@ -2376,8 +2376,8 @@ void FlarialGUI::ApplyCombinedDeepFry()
 
 		ID2D1Bitmap* bitmap = nullptr;
 
-		if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
-		else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
+		if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
+		else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
 
 		cum->SetInput(0, bitmap);
 
@@ -2406,7 +2406,7 @@ void FlarialGUI::ApplyCombinedDeepFry()
 	}
 }
 
-void FlarialGUI::ApplyAestheticDeepFry()
+void MusuiGUI::ApplyAestheticDeepFry()
 {
 
 	if (SwapchainHook::init) {
@@ -2417,8 +2417,8 @@ void FlarialGUI::ApplyAestheticDeepFry()
 
 		ID2D1Bitmap* bitmap = nullptr;
 
-		if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
-		else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
+		if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
+		else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
 
 		cum->SetInput(0, bitmap);
 
@@ -2435,7 +2435,7 @@ void FlarialGUI::ApplyAestheticDeepFry()
 	}
 }
 
-void FlarialGUI::ApplyDeepFry(float intensity)
+void MusuiGUI::ApplyDeepFry(float intensity)
 {
 
 	if (SwapchainHook::init) {
@@ -2446,8 +2446,8 @@ void FlarialGUI::ApplyDeepFry(float intensity)
 
 		ID2D1Bitmap* bitmap = nullptr;
 
-		if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
-		else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
+		if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
+		else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
 
 		cum->SetInput(0, bitmap);
 
@@ -2465,7 +2465,7 @@ void FlarialGUI::ApplyDeepFry(float intensity)
 	}
 }
 
-void FlarialGUI::ApplyHue(float Hue)
+void MusuiGUI::ApplyHue(float Hue)
 {
 
 	if (SwapchainHook::init) {
@@ -2476,8 +2476,8 @@ void FlarialGUI::ApplyHue(float Hue)
 
 		ID2D1Bitmap* bitmap = nullptr;
 
-		if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
-		else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
+		if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
+		else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
 
 		cum->SetInput(0, bitmap);
 
@@ -2491,7 +2491,7 @@ void FlarialGUI::ApplyHue(float Hue)
 	}
 }
 
-void FlarialGUI::ApplyPaintEffect(float intensity)
+void MusuiGUI::ApplyPaintEffect(float intensity)
 {
 
 	if (SwapchainHook::init) {
@@ -2502,8 +2502,8 @@ void FlarialGUI::ApplyPaintEffect(float intensity)
 
 		ID2D1Bitmap* bitmap = nullptr;
 
-		if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
-		else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
+		if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
+		else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
 
 		cum->SetInput(0, bitmap);
 
@@ -2519,12 +2519,12 @@ void FlarialGUI::ApplyPaintEffect(float intensity)
 }
 
 
-void FlarialGUI::ApplyGaussianBlur(float blurIntensity)
+void MusuiGUI::ApplyGaussianBlur(float blurIntensity)
 {
-	FlarialGUI::BlurRect(D2D1::RoundedRect(D2D1::RectF(0, 0, MC::windowSize.x, MC::windowSize.y), 0, 0), 0.0);
+	MusuiGUI::BlurRect(D2D1::RoundedRect(D2D1::RectF(0, 0, MC::windowSize.x, MC::windowSize.y), 0, 0), 0.0);
 }
 
-void FlarialGUI::ApplySusGaussianBlur(float blurIntensity)
+void MusuiGUI::ApplySusGaussianBlur(float blurIntensity)
 {
 
 	ID2D1Effect* effect;
@@ -2548,16 +2548,16 @@ void FlarialGUI::ApplySusGaussianBlur(float blurIntensity)
 	}
 }
 
-void FlarialGUI::Notify(std::string text) {
+void MusuiGUI::Notify(std::string text) {
 
-	if (SwapchainHook::init && FlarialGUI::writeFactory != nullptr) {
+	if (SwapchainHook::init && MusuiGUI::writeFactory != nullptr) {
 		Notification e;
 		e.text = text;
 		e.finished = false;
 		e.currentPos = Constraints::PercentageConstraint(0.01, "right", true);
 		e.currentPosY = Constraints::PercentageConstraint(0.25, "bottom", true);
 
-		IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(FlarialGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, Constraints::SpacingConstraint(0.3, Constraints::RelativeConstraint(0.45, "height", true)), DWRITE_FONT_WEIGHT_REGULAR, Constraints::RelativeConstraint(100.0, "height", true), Constraints::RelativeConstraint(100.0, "height", true));
+		IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(MusuiGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, Constraints::SpacingConstraint(0.3, Constraints::RelativeConstraint(0.45, "height", true)), DWRITE_FONT_WEIGHT_REGULAR, Constraints::RelativeConstraint(100.0, "height", true), Constraints::RelativeConstraint(100.0, "height", true));
 
 		DWRITE_TEXT_METRICS textMetrics;
 		textLayout->GetMetrics(&textMetrics);
@@ -2571,7 +2571,7 @@ void FlarialGUI::Notify(std::string text) {
 
 }
 
-void FlarialGUI::NotifyHeartbeat() {
+void MusuiGUI::NotifyHeartbeat() {
 
 
 	float rectHeight = Constraints::RelativeConstraint(0.10, "height", true);
@@ -2582,12 +2582,12 @@ void FlarialGUI::NotifyHeartbeat() {
 
 	int i = 0;
 
-	for (auto& notif : FlarialGUI::notifications) {
+	for (auto& notif : MusuiGUI::notifications) {
 
 		float rectWidth = notif.width;
 		float x = Constraints::PercentageConstraint(0.01, "right", true) - rectWidth;
 
-		FlarialGUI::lerp(notif.currentPosY, y, 0.20f * FlarialGUI::frameFactor);
+		MusuiGUI::lerp(notif.currentPosY, y, 0.20f * MusuiGUI::frameFactor);
 
 		if (!notif.arrived) {
 
@@ -2595,12 +2595,12 @@ void FlarialGUI::NotifyHeartbeat() {
 				D2D1::RectF(notif.currentPos, notif.currentPosY, notif.currentPos + rectWidth, notif.currentPosY + rectHeight), rounding.x,
 				rounding.x);
 
-			D2D1_COLOR_F col = FlarialGUI::HexToColorF("110F10");
+			D2D1_COLOR_F col = MusuiGUI::HexToColorF("110F10");
 			col.a = 0.60;
 
 			if (!ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value)
-				FlarialGUI::BlurRect(rect, 6.0f);
-			FlarialGUI::RoundedRect(notif.currentPos, notif.currentPosY,
+				MusuiGUI::BlurRect(rect, 6.0f);
+			MusuiGUI::RoundedRect(notif.currentPos, notif.currentPosY,
 				col, rectWidth,
 				rectHeight, rounding.x, rounding.x);
 
@@ -2610,24 +2610,24 @@ void FlarialGUI::NotifyHeartbeat() {
 
 			col = colors_primary1_rgb ? rgbColor : colors_primary1;
 			col.a = o_colors_primary1;
-			FlarialGUI::RoundedRect(notif.currentPos, notif.currentPosY,
+			MusuiGUI::RoundedRect(notif.currentPos, notif.currentPosY,
 				col, rectWidth,
 				rectHeight, rounding.x, rounding.x);
 
 			D2D::context->PopAxisAlignedClip();
 
-			FlarialGUI::PushSize(notif.currentPos, notif.currentPosY, rectWidth, rectHeight);
+			MusuiGUI::PushSize(notif.currentPos, notif.currentPosY, rectWidth, rectHeight);
 
 			float logoX = Constraints::PercentageConstraint(0.01, "left") - Constraints::SpacingConstraint(0.18, rectHeight);
 			float logoY = Constraints::PercentageConstraint(0.01, "top") - Constraints::SpacingConstraint(0.10, rectHeight);
 			float logoWidth = Constraints::RelativeConstraint(1.25);
 
-			FlarialGUI::Image("\\Flarial\\assets\\logo.png", D2D1::RectF(logoX, logoY, logoX + logoWidth, logoY + logoWidth));
+			MusuiGUI::Image("\\Musui\\assets\\logo.png", D2D1::RectF(logoX, logoY, logoX + logoWidth, logoY + logoWidth));
 
 			logoX += Constraints::SpacingConstraint(0.85, logoWidth);
 			logoY -= Constraints::SpacingConstraint(0.105, logoWidth);
 
-			FlarialGUI::FlarialTextWithFont(logoX, logoY, L"Notification", rectWidth,
+			MusuiGUI::MusuiTextWithFont(logoX, logoY, L"Notification", rectWidth,
 				logoWidth, DWRITE_TEXT_ALIGNMENT_LEADING,
 				Constraints::SpacingConstraint(0.45, Constraints::RelativeConstraint(0.45,
 					"height",
@@ -2635,7 +2635,7 @@ void FlarialGUI::NotifyHeartbeat() {
 				DWRITE_FONT_WEIGHT_BOLD);
 
 			logoY += Constraints::SpacingConstraint(0.185, logoWidth);
-			FlarialGUI::FlarialTextWithFont(logoX, logoY, FlarialGUI::to_wide(notif.text).c_str(), rectWidth, logoWidth,
+			MusuiGUI::MusuiTextWithFont(logoX, logoY, MusuiGUI::to_wide(notif.text).c_str(), rectWidth, logoWidth,
 				DWRITE_TEXT_ALIGNMENT_LEADING, Constraints::SpacingConstraint(0.3,
 					Constraints::RelativeConstraint(
 						0.45,
@@ -2644,9 +2644,9 @@ void FlarialGUI::NotifyHeartbeat() {
 				DWRITE_FONT_WEIGHT_NORMAL);
 
 
-			FlarialGUI::PopSize();
+			MusuiGUI::PopSize();
 
-			FlarialGUI::lerp(notif.currentPos, x - 3, 0.12f * FlarialGUI::frameFactor);
+			MusuiGUI::lerp(notif.currentPos, x - 3, 0.12f * MusuiGUI::frameFactor);
 
 			if (notif.currentPos < x || notif.currentPos == x) {
 				notif.arrived = true;
@@ -2663,7 +2663,7 @@ void FlarialGUI::NotifyHeartbeat() {
 
 			if (timeDifference.count() > 5000) {
 
-				FlarialGUI::lerp(notif.currentPos, Constraints::PercentageConstraint(0.01, "right", true) + 50, 0.12f * FlarialGUI::frameFactor);
+				MusuiGUI::lerp(notif.currentPos, Constraints::PercentageConstraint(0.01, "right", true) + 50, 0.12f * MusuiGUI::frameFactor);
 
 			}
 
@@ -2671,12 +2671,12 @@ void FlarialGUI::NotifyHeartbeat() {
 				D2D1::RectF(notif.currentPos, notif.currentPosY, notif.currentPos + rectWidth, notif.currentPosY + rectHeight), rounding.x,
 				rounding.x);
 
-			D2D1_COLOR_F col = FlarialGUI::HexToColorF("110F10");
+			D2D1_COLOR_F col = MusuiGUI::HexToColorF("110F10");
 			col.a = 0.60;
 
 			if (!ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value)
-				FlarialGUI::BlurRect(rect, 6.0f);
-			FlarialGUI::RoundedRect(notif.currentPos, notif.currentPosY,
+				MusuiGUI::BlurRect(rect, 6.0f);
+			MusuiGUI::RoundedRect(notif.currentPos, notif.currentPosY,
 				col, rectWidth,
 				rectHeight, rounding.x, rounding.x);
 
@@ -2686,25 +2686,25 @@ void FlarialGUI::NotifyHeartbeat() {
 
 			col = colors_primary1_rgb ? rgbColor : colors_primary1;
 			col.a = o_colors_primary1;
-			FlarialGUI::RoundedRect(notif.currentPos, notif.currentPosY,
+			MusuiGUI::RoundedRect(notif.currentPos, notif.currentPosY,
 				col, rectWidth,
 				rectHeight, rounding.x, rounding.x);
 
 			D2D::context->PopAxisAlignedClip();
 
-			FlarialGUI::PushSize(notif.currentPos, notif.currentPosY, rectWidth, rectHeight);
+			MusuiGUI::PushSize(notif.currentPos, notif.currentPosY, rectWidth, rectHeight);
 
 			float logoX = Constraints::PercentageConstraint(0.01, "left") - Constraints::SpacingConstraint(0.18, rectHeight);
 			float logoY = Constraints::PercentageConstraint(0.01, "top") - Constraints::SpacingConstraint(0.10, rectHeight);
 			float logoWidth = Constraints::RelativeConstraint(1.25);
 
-			FlarialGUI::Image("\\Flarial\\assets\\logo.png", D2D1::RectF(logoX, logoY, logoX + logoWidth, logoY + logoWidth));
+			MusuiGUI::Image("\\Musui\\assets\\logo.png", D2D1::RectF(logoX, logoY, logoX + logoWidth, logoY + logoWidth));
 
 			logoX += Constraints::SpacingConstraint(0.85, logoWidth);
 
 			logoY -= Constraints::SpacingConstraint(0.105, logoWidth);
 
-			FlarialGUI::FlarialTextWithFont(logoX, logoY, L"Notification", rectWidth,
+			MusuiGUI::MusuiTextWithFont(logoX, logoY, L"Notification", rectWidth,
 				logoWidth, DWRITE_TEXT_ALIGNMENT_LEADING,
 				Constraints::SpacingConstraint(0.45, Constraints::RelativeConstraint(0.45,
 					"height",
@@ -2712,7 +2712,7 @@ void FlarialGUI::NotifyHeartbeat() {
 				DWRITE_FONT_WEIGHT_BOLD);
 
 			logoY += Constraints::SpacingConstraint(0.185, logoWidth);
-			FlarialGUI::FlarialTextWithFont(logoX, logoY, FlarialGUI::to_wide(notif.text).c_str(), rectWidth, logoWidth,
+			MusuiGUI::MusuiTextWithFont(logoX, logoY, MusuiGUI::to_wide(notif.text).c_str(), rectWidth, logoWidth,
 				DWRITE_TEXT_ALIGNMENT_LEADING, Constraints::SpacingConstraint(0.3,
 					Constraints::RelativeConstraint(
 						0.45,
@@ -2720,28 +2720,28 @@ void FlarialGUI::NotifyHeartbeat() {
 						true)),
 				DWRITE_FONT_WEIGHT_NORMAL);
 
-			FlarialGUI::PopSize();
+			MusuiGUI::PopSize();
 
 			if (notif.currentPos > Constraints::PercentageConstraint(0.01, "right", true)) notif.finished = true;
 
 		}
 
 		y -= Constraints::SpacingConstraint(1.25, rectHeight);
-		if (notif.finished) FlarialGUI::notifications.erase(std::next(FlarialGUI::notifications.begin(), i));
+		if (notif.finished) MusuiGUI::notifications.erase(std::next(MusuiGUI::notifications.begin(), i));
 	}
 }
 
-void FlarialGUI::BlurRect(D2D1_ROUNDED_RECT rect, float intensity) {
+void MusuiGUI::BlurRect(D2D1_ROUNDED_RECT rect, float intensity) {
 
 
-	if (SwapchainHook::init && FlarialGUI::blurbrush != nullptr) {
+	if (SwapchainHook::init && MusuiGUI::blurbrush != nullptr) {
 
 		if (factory == nullptr) D2D::context->GetFactory(&factory);
 
 		ID2D1RoundedRectangleGeometry* geo;
 		factory->CreateRoundedRectangleGeometry(rect, &geo);
 
-		D2D::context->FillGeometry(geo, FlarialGUI::blurbrush);
+		D2D::context->FillGeometry(geo, MusuiGUI::blurbrush);
 
 		Memory::SafeRelease(factory);
 		Memory::SafeRelease(geo);
@@ -2749,19 +2749,19 @@ void FlarialGUI::BlurRect(D2D1_ROUNDED_RECT rect, float intensity) {
 
 }
 
-void FlarialGUI::AllahBlur(float intensity) {
+void MusuiGUI::AllahBlur(float intensity) {
 
 	// Create Gaussian blur effect
-	if (FlarialGUI::blur == nullptr) {
+	if (MusuiGUI::blur == nullptr) {
 
-		D2D::context->CreateEffect(CLSID_D2D1GaussianBlur, &FlarialGUI::blur);
+		D2D::context->CreateEffect(CLSID_D2D1GaussianBlur, &MusuiGUI::blur);
 	}
 
 	if (SwapchainHook::init) {
 
 		ID2D1Bitmap* bitmap = nullptr;
-		if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
-		else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
+		if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &bitmap);
+		else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &bitmap);
 
 		ID2D1Effect* effect;
 		D2D::context->CreateEffect(CLSID_D2D1GaussianBlur, &effect);
@@ -2781,7 +2781,7 @@ void FlarialGUI::AllahBlur(float intensity) {
 
 }
 
-void FlarialGUI::ShadowRect(D2D1_ROUNDED_RECT rect, D2D1_COLOR_F color) {
+void MusuiGUI::ShadowRect(D2D1_ROUNDED_RECT rect, D2D1_COLOR_F color) {
 
 	if (!Client::settings.getSettingByName<bool>("noshadows")->value) {
 		// Create a new blank bitmap
@@ -2790,21 +2790,21 @@ void FlarialGUI::ShadowRect(D2D1_ROUNDED_RECT rect, D2D1_COLOR_F color) {
 			D2D::context->GetPixelFormat());
 		D2D::context->CreateBitmap(D2D::context->GetPixelSize(), nullptr, 0, newLayerProps, &newLayer);
 
-		if (newLayer != nullptr && FlarialGUI::blur != nullptr) {
+		if (newLayer != nullptr && MusuiGUI::blur != nullptr) {
 			D2D::context->SetTarget(newLayer);
 			D2D::context->Clear(D2D1::ColorF(0, 0, 0, 0));
 
 			ID2D1SolidColorBrush* colorBrush = nullptr;
-			colorBrush = FlarialGUI::getBrush(color);
+			colorBrush = MusuiGUI::getBrush(color);
 			D2D::context->FillRoundedRectangle(rect, colorBrush);
 
 
-			FlarialGUI::blur->SetInput(0, newLayer);
-			FlarialGUI::blur->SetValue(D2D1_GAUSSIANBLUR_PROP_BORDER_MODE, D2D1_BORDER_MODE_HARD);
-			FlarialGUI::blur->SetValue(D2D1_GAUSSIANBLUR_PROP_STANDARD_DEVIATION, 10.0f);
+			MusuiGUI::blur->SetInput(0, newLayer);
+			MusuiGUI::blur->SetValue(D2D1_GAUSSIANBLUR_PROP_BORDER_MODE, D2D1_BORDER_MODE_HARD);
+			MusuiGUI::blur->SetValue(D2D1_GAUSSIANBLUR_PROP_STANDARD_DEVIATION, 10.0f);
 
 			ID2D1Image* out;
-			FlarialGUI::blur->GetOutput(&out);
+			MusuiGUI::blur->GetOutput(&out);
 
 			// Set the rendering target to the main bitmap
 			if (SwapchainHook::queue != nullptr)
@@ -2822,12 +2822,12 @@ void FlarialGUI::ShadowRect(D2D1_ROUNDED_RECT rect, D2D1_COLOR_F color) {
 	}
 }
 
-void FlarialGUI::InnerShadowRect(D2D1_ROUNDED_RECT rect, float howbig, D2D1_COLOR_F color) {
+void MusuiGUI::InnerShadowRect(D2D1_ROUNDED_RECT rect, float howbig, D2D1_COLOR_F color) {
 
 
 }
 
-void FlarialGUI::CopyBitmap(ID2D1Bitmap1* from, ID2D1Bitmap** to)
+void MusuiGUI::CopyBitmap(ID2D1Bitmap1* from, ID2D1Bitmap** to)
 {
 	if (from == nullptr)
 	{
@@ -2863,7 +2863,7 @@ void FlarialGUI::CopyBitmap(ID2D1Bitmap1* from, ID2D1Bitmap** to)
 	(*to)->CopyFromBitmap(&destPoint, from, &rect);
 }
 
-std::wstring FlarialGUI::to_wide(const std::string& str) {
+std::wstring MusuiGUI::to_wide(const std::string& str) {
 	int wchars_num = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
 	std::wstring wide;
 	wide.resize(wchars_num);
@@ -2879,7 +2879,7 @@ std::wstring Lconst std::string& str)
 	return converterX.from_bytes(str);
 }
 
-std::string FlarialGUI::from_wide(const std::wstring& wstr)
+std::string MusuiGUI::from_wide(const std::wstring& wstr)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -2889,7 +2889,7 @@ std::string FlarialGUI::from_wide(const std::wstring& wstr)
 */
 
 template <typename T>
-void FlarialGUI::lerp(T& a, const T& b, float t)
+void MusuiGUI::lerp(T& a, const T& b, float t)
 {
 	if (!Client::settings.getSettingByName<bool>("disableanims")->value) {
 		// Perform linear interpolation between a and b based on t
@@ -2914,7 +2914,7 @@ UINT32 ColorValueToUInt(const D3DCOLORVALUE& color) {
 	return (static_cast<UINT32>(a) << 24) | (static_cast<UINT32>(r) << 16) | (static_cast<UINT32>(g) << 8) | b;
 }
 
-ID2D1SolidColorBrush* FlarialGUI::getBrush(D2D1_COLOR_F color) {
+ID2D1SolidColorBrush* MusuiGUI::getBrush(D2D1_COLOR_F color) {
 
 	UINT32 key = ColorValueToUInt(color);
 
@@ -2932,7 +2932,7 @@ ID2D1SolidColorBrush* FlarialGUI::getBrush(D2D1_COLOR_F color) {
 	}
 }
 /*
-IDWriteTextFormat* FlarialGUI::getTextFormat(const std::string& fontFamily, FLOAT fontSize, DWRITE_FONT_WEIGHT fontWeight, DWRITE_FONT_STYLE fontStyle, DWRITE_FONT_STRETCH fontStretch, DWRITE_TEXT_ALIGNMENT alignment) {
+IDWriteTextFormat* MusuiGUI::getTextFormat(const std::string& fontFamily, FLOAT fontSize, DWRITE_FONT_WEIGHT fontWeight, DWRITE_FONT_STYLE fontStyle, DWRITE_FONT_STRETCH fontStretch, DWRITE_TEXT_ALIGNMENT alignment) {
 	std::string key = fontFamily + "|" +
 		std::to_string(fontSize) + "|" +
 		std::to_string(static_cast<int>(fontWeight)) + "|" +
@@ -2948,7 +2948,7 @@ IDWriteTextFormat* FlarialGUI::getTextFormat(const std::string& fontFamily, FLOA
 	}
 	else {
 		winrt::com_ptr<IDWriteTextFormat> textFormat;
-		HRESULT hr = FlarialGUI::writeFactory->CreateTextFormat(LfontFamily, nullptr, fontWeight, fontStyle, fontStretch, fontSize, L"en-us", textFormat.put());
+		HRESULT hr = MusuiGUI::writeFactory->CreateTextFormat(LfontFamily, nullptr, fontWeight, fontStyle, fontStretch, fontSize, L"en-us", textFormat.put());
 		if (FAILED(hr)) {
 			// Handle the error appropriately, e.g., log an error message or throw an exception.
 			return nullptr;
@@ -2964,7 +2964,7 @@ IDWriteTextFormat* FlarialGUI::getTextFormat(const std::string& fontFamily, FLOA
 }
 */
 
-ID2D1LinearGradientBrush* FlarialGUI::getLinearGradientBrush(float x, float hexPreviewSize, float shadePickerWidth, ID2D1GradientStopCollection* pGradientStops, std::string susKey) {
+ID2D1LinearGradientBrush* MusuiGUI::getLinearGradientBrush(float x, float hexPreviewSize, float shadePickerWidth, ID2D1GradientStopCollection* pGradientStops, std::string susKey) {
 	// Include gradient stop colors in the cache key
 	std::string key = std::to_string(x) + std::to_string(hexPreviewSize) + std::to_string(shadePickerWidth) + susKey;
 
@@ -2991,19 +2991,19 @@ ID2D1LinearGradientBrush* FlarialGUI::getLinearGradientBrush(float x, float hexP
 	}
 }
 
-void FlarialGUI::SetIsInAdditionalYMode()
+void MusuiGUI::SetIsInAdditionalYMode()
 {
 	shouldAdditionalY = true;
 }
 
-void FlarialGUI::UnSetIsInAdditionalYMode()
+void MusuiGUI::UnSetIsInAdditionalYMode()
 {
 	shouldAdditionalY = false;
 }
 
-float FlarialGUI::SettingsTextWidth(std::string text) {
+float MusuiGUI::SettingsTextWidth(std::string text) {
 
-	IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(FlarialGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, Constraints::SpacingConstraint(1.05, Constraints::RelativeConstraint(0.12, "height", true)), DWRITE_FONT_WEIGHT_REGULAR, Constraints::PercentageConstraint(1.0f, "left"), Constraints::RelativeConstraint(0.029, "height", true));
+	IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(MusuiGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, Constraints::SpacingConstraint(1.05, Constraints::RelativeConstraint(0.12, "height", true)), DWRITE_FONT_WEIGHT_REGULAR, Constraints::PercentageConstraint(1.0f, "left"), Constraints::RelativeConstraint(0.029, "height", true));
 
 	DWRITE_TEXT_METRICS textMetrics;
 
@@ -3016,7 +3016,7 @@ float FlarialGUI::SettingsTextWidth(std::string text) {
 std::unordered_map<std::string, ToolTipParams> tooltipsList;
 bool resized = false;
 
-void FlarialGUI::Tooltip(std::string id, float x, float y, std::string text, float width, float height, bool push, bool relative) {
+void MusuiGUI::Tooltip(std::string id, float x, float y, std::string text, float width, float height, bool push, bool relative) {
 
 	if (relative && isInScrollView) y += scrollpos;
 	if (push) {
@@ -3025,9 +3025,9 @@ void FlarialGUI::Tooltip(std::string id, float x, float y, std::string text, flo
 	}
 
 	float fontSize1 = Constraints::RelativeConstraint(0.12, "height", true);
-	//IDWriteTextFormat* textFormat = FlarialGUI::getTextFormat(Client::settings.getSettingByName<std::string>("fontname")->value, fontSize, DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, DWRITE_TEXT_ALIGNMENT_LEADING);
+	//IDWriteTextFormat* textFormat = MusuiGUI::getTextFormat(Client::settings.getSettingByName<std::string>("fontname")->value, fontSize, DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, DWRITE_TEXT_ALIGNMENT_LEADING);
 	
-	IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(FlarialGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, fontSize1, DWRITE_FONT_WEIGHT_REGULAR, Constraints::PercentageConstraint(1.0f, "left"), Constraints::RelativeConstraint(0.029, "height", true));
+	IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(MusuiGUI::to_wide(text).c_str(), DWRITE_TEXT_ALIGNMENT_LEADING, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, fontSize1, DWRITE_FONT_WEIGHT_REGULAR, Constraints::PercentageConstraint(1.0f, "left"), Constraints::RelativeConstraint(0.029, "height", true));
 
 	DWRITE_TEXT_METRICS textMetrics;
 	textLayout->GetMetrics(&textMetrics);
@@ -3088,13 +3088,13 @@ void FlarialGUI::Tooltip(std::string id, float x, float y, std::string text, flo
 
 		RoundedRect(Tooltips[id].hoverX + offset, Tooltips[id].hoverY - offset, bgCol, rectWidth, rectHeight, round.x, round.x);
 		RoundedHollowRect(Tooltips[id].hoverX + offset, Tooltips[id].hoverY - offset, Constraints::RelativeConstraint(0.001, "height", true), outlineCol, rectWidth, rectHeight, round.x, round.x);
-		FlarialTextWithFont(spacing + Tooltips[id].hoverX + offset, Tooltips[id].hoverY - offset, FlarialGUI::to_wide(text).c_str(), textMetrics.width * 6.9, rectHeight, DWRITE_TEXT_ALIGNMENT_LEADING, fontSize1, DWRITE_FONT_WEIGHT_REGULAR, textCol);
+		MusuiTextWithFont(spacing + Tooltips[id].hoverX + offset, Tooltips[id].hoverY - offset, MusuiGUI::to_wide(text).c_str(), textMetrics.width * 6.9, rectHeight, DWRITE_TEXT_ALIGNMENT_LEADING, fontSize1, DWRITE_FONT_WEIGHT_REGULAR, textCol);
 	}
 
 
 }
 
-void FlarialGUI::displayToolTips() {
+void MusuiGUI::displayToolTips() {
 
 	for (std::pair<const std::basic_string<char>, ToolTipParams> i : tooltipsList) {
 		if (!i.first.empty()) {

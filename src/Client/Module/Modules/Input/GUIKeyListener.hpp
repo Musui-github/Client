@@ -19,15 +19,15 @@ class GUIKeyListener : public Listener {
 
                 if (event.GetKey() == 20 && event.GetAction() == (int)ActionType::PRESSED || event.GetKey() == VK_SHIFT) isCapital = !isCapital;
 
-                for(auto& shi : FlarialGUI::KeybindSelectors) {
+                for(auto& shi : MusuiGUI::KeybindSelectors) {
                     shi.currentOnKeyTime = std::chrono::steady_clock::now();
                 }
 
                 if(event.GetPressedKeysAsString() != "no")
-                FlarialGUI::currentKeybind = event.GetPressedKeysAsString();
-                else FlarialGUI::currentKeybind = "nothing";
+                MusuiGUI::currentKeybind = event.GetPressedKeysAsString();
+                else MusuiGUI::currentKeybind = "nothing";
 
-                for (auto &box: FlarialGUI::TextBoxes) {
+                for (auto &box: MusuiGUI::TextBoxes) {
 
                     if(event.GetKey() == VK_ESCAPE || ModuleManager::getModule("ClickGUI")->IsKeybind(event.keys) && ModuleManager::getModule("ClickGUI")->IsKeyPartOfKeybind(event.key)) box.isActive = false;
 
@@ -90,7 +90,7 @@ class GUIKeyListener : public Listener {
 
             } else {
 
-                for (auto &box: FlarialGUI::TextBoxes) {
+                for (auto &box: MusuiGUI::TextBoxes) {
 
                     box.isActive = false;
 

@@ -9,7 +9,7 @@ std::map<std::string, DWRITE_TEXT_ALIGNMENT> alignments = {
 };
 
 void Module::NormalRender(int index, std::string text, std::string value) {
-	FlarialGUI::inMenu = ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value;
+	MusuiGUI::inMenu = ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value;
 	if (settings.getSettingByName<bool>("enabled")->value && SDK::CurrentScreen == "hud_screen") {
 		float rotation = this->settings.getSettingByName<float>("rotation")->value;
 		D2D1_MATRIX_3X2_F oldTransform;
@@ -46,12 +46,12 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 
 		if (responsivewidth) {
 
-			//IDWriteTextFormat* textFormat = FlarialGUI::getTextFormat(
+			//IDWriteTextFormat* textFormat = MusuiGUI::getTextFormat(
 			//	Client::settings.getSettingByName<std::string>("mod_fontname")->value,
 			//	Constraints::FontScaler(textSize), DWRITE_FONT_WEIGHT_REGULAR, DWRITE_FONT_STYLE_NORMAL,
 			//	DWRITE_FONT_STRETCH_NORMAL, alignment);
 
-			IDWriteTextLayout* textLayout = FlarialGUI::GetTextLayout(FlarialGUI::to_wide(text).c_str(), alignment, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, textSize, DWRITE_FONT_WEIGHT_REGULAR, textWidth, textHeight);
+			IDWriteTextLayout* textLayout = MusuiGUI::GetTextLayout(MusuiGUI::to_wide(text).c_str(), alignment, DWRITE_PARAGRAPH_ALIGNMENT_CENTER, textSize, DWRITE_FONT_WEIGHT_REGULAR, textWidth, textHeight);
 
 			textLayout->GetMetrics(&textMetrics);
 			//textLayout->Release();
@@ -75,9 +75,9 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 		else realcenter = Constraints::CenterConstraint(rectWidth, textHeight * this->settings.getSettingByName<float>("rectheight")->value);
 
 		if (ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value || ClickGUIRenderer::editmenu) {
-			FlarialGUI::SetWindowRect(realcenter.x + textMetrics.left, realcenter.y, rectWidth, textHeight * this->settings.getSettingByName<float>("rectheight")->value, index, -textMetrics.left);
+			MusuiGUI::SetWindowRect(realcenter.x + textMetrics.left, realcenter.y, rectWidth, textHeight * this->settings.getSettingByName<float>("rectheight")->value, index, -textMetrics.left);
 
-			Vec2<float> vec2 = FlarialGUI::CalculateMovedXY(realcenter.x, realcenter.y, index, rectWidth, textHeight * this->settings.getSettingByName<float>("rectheight")->value);
+			Vec2<float> vec2 = MusuiGUI::CalculateMovedXY(realcenter.x, realcenter.y, index, rectWidth, textHeight * this->settings.getSettingByName<float>("rectheight")->value);
 
 			realcenter.x = vec2.x;
 			realcenter.y = vec2.y;
@@ -92,9 +92,9 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 
 		Vec2<float> rounde = Constraints::RoundingConstraint(this->settings.getSettingByName<float>("rounding")->value * settings.getSettingByName<float>("uiscale")->value, this->settings.getSettingByName<float>("rounding")->value * settings.getSettingByName<float>("uiscale")->value);
 
-		D2D1_COLOR_F bgColor = settings.getSettingByName<bool>("bgRGB")->value ? FlarialGUI::rgbColor : FlarialGUI::HexToColorF(settings.getSettingByName<std::string>("bgColor")->value);
-		D2D1_COLOR_F textColor = settings.getSettingByName<bool>("textRGB")->value ? FlarialGUI::rgbColor : FlarialGUI::HexToColorF(settings.getSettingByName<std::string>("textColor")->value);
-		D2D1_COLOR_F borderColor = settings.getSettingByName<bool>("borderRGB")->value ? FlarialGUI::rgbColor : FlarialGUI::HexToColorF(settings.getSettingByName<std::string>("borderColor")->value);
+		D2D1_COLOR_F bgColor = settings.getSettingByName<bool>("bgRGB")->value ? MusuiGUI::rgbColor : MusuiGUI::HexToColorF(settings.getSettingByName<std::string>("bgColor")->value);
+		D2D1_COLOR_F textColor = settings.getSettingByName<bool>("textRGB")->value ? MusuiGUI::rgbColor : MusuiGUI::HexToColorF(settings.getSettingByName<std::string>("textColor")->value);
+		D2D1_COLOR_F borderColor = settings.getSettingByName<bool>("borderRGB")->value ? MusuiGUI::rgbColor : MusuiGUI::HexToColorF(settings.getSettingByName<std::string>("borderColor")->value);
 
 		bgColor.a = settings.getSettingByName<float>("bgOpacity")->value;
 		textColor.a = settings.getSettingByName<float>("textOpacity")->value;
@@ -107,9 +107,9 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 			D2D::context->SetTransform(rotationMatrix);
 		}
 
-		if (settings.getSettingByName<bool>("BlurEffect")->value) FlarialGUI::BlurRect(D2D1::RoundedRect(D2D1::RectF(realcenter.x + textMetrics.left, realcenter.y, realcenter.x + rectWidth + textMetrics.left, realcenter.y + (textHeight)*this->settings.getSettingByName<float>("rectheight")->value), rounde.x, rounde.x), Client::settings.getSettingByName<float>("blurintensity")->value);
+		if (settings.getSettingByName<bool>("BlurEffect")->value) MusuiGUI::BlurRect(D2D1::RoundedRect(D2D1::RectF(realcenter.x + textMetrics.left, realcenter.y, realcenter.x + rectWidth + textMetrics.left, realcenter.y + (textHeight)*this->settings.getSettingByName<float>("rectheight")->value), rounde.x, rounde.x), Client::settings.getSettingByName<float>("blurintensity")->value);
 
-		FlarialGUI::RoundedRect(
+		MusuiGUI::RoundedRect(
 			realcenter.x + textMetrics.left,
 			realcenter.y,
 			bgColor,
@@ -119,10 +119,10 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 			rounde.x
 		);
 
-		FlarialGUI::FlarialTextWithFont(
+		MusuiGUI::MusuiTextWithFont(
 			realcenter.x + Constraints::SpacingConstraint(paddingX, textWidth) + textMetrics.left,
 			realcenter.y + Constraints::SpacingConstraint(paddingY, textWidth),
-			FlarialGUI::to_wide(text).c_str(),
+			MusuiGUI::to_wide(text).c_str(),
 			rectWidth,
 			textHeight,
 			alignment,
@@ -132,7 +132,7 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 		);
 
 		if (this->settings.getSettingByName<bool>("border")->value) {
-			FlarialGUI::RoundedHollowRect(
+			MusuiGUI::RoundedHollowRect(
 				realcenter.x + textMetrics.left,
 				realcenter.y,
 				Constraints::RelativeConstraint((this->settings.getSettingByName<float>("borderWidth")->value * settings.getSettingByName<float>("uiscale")->value) / 100.0f, "height", true),
@@ -147,6 +147,6 @@ void Module::NormalRender(int index, std::string text, std::string value) {
 		if (rotation > 0.0f) D2D::context->SetTransform(oldTransform);
 
 		if (ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value || ClickGUIRenderer::editmenu)
-			FlarialGUI::UnsetWindowRect();
+			MusuiGUI::UnsetWindowRect();
 	}
 }

@@ -10,7 +10,7 @@ class Sneak : public Module {
 public:
 
 
-    Sneak() : Module("Toggle Sneak", "No need to hold down your sneak key.", "\\Flarial\\assets\\slowly.png", 'M') {
+    Sneak() : Module("Toggle Sneak", "No need to hold down your sneak key.", "\\Musui\\assets\\slowly.png", 'M') {
 
         onEnable();
 
@@ -49,7 +49,7 @@ public:
         const float textWidth = Constraints::RelativeConstraint(0.12, "height", true);
         const float textHeight = Constraints::RelativeConstraint(0.029, "height", true);
 
-        FlarialGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
+        MusuiGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
 
     }
 };

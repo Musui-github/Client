@@ -10,7 +10,7 @@ private:
 
     static void FontDrawTransformedCallback(void* _this, void* screenContext, std::string& str, float x, float y, MCCColor color, int angle, float s, bool centered, float maxWidth) {
 
-        std::string txt("Flarial on top!");
+        std::string txt("Musui on top!");
         func_original(_this, screenContext, txt, x, y, color, angle, s, centered, maxWidth);
 
     }

@@ -9,7 +9,7 @@ class Zoom : public Module {
 
 public:
 
-    Zoom() : Module("Zoom", "Allows you to see distant places.", "\\Flarial\\assets\\magnify.png", 'C') {
+    Zoom() : Module("Zoom", "Allows you to see distant places.", "\\Musui\\assets\\magnify.png", 'C') {
 
         onEnable();
 
@@ -51,20 +51,20 @@ public:
         float toggleX = Constraints::PercentageConstraint(0.019, "left");
         float toggleY = Constraints::PercentageConstraint(0.10, "top");
 
-        FlarialGUI::ScrollBar(toggleX, toggleY, 140, Constraints::SpacingConstraint(5.5, textWidth), 2);
-        FlarialGUI::SetScrollView(toggleX, Constraints::PercentageConstraint(0.00, "top"), Constraints::RelativeConstraint(1.0, "width"), Constraints::RelativeConstraint(1.0f, "height"));
+        MusuiGUI::ScrollBar(toggleX, toggleY, 140, Constraints::SpacingConstraint(5.5, textWidth), 2);
+        MusuiGUI::SetScrollView(toggleX, Constraints::PercentageConstraint(0.00, "top"), Constraints::RelativeConstraint(1.0, "width"), Constraints::RelativeConstraint(1.0f, "height"));
 
-        FlarialGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
+        MusuiGUI::KeybindSelector(0, toggleX, toggleY, settings.getSettingByName<std::string>("keybind")->value);
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"Modifier", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"Modifier", textWidth * 3.0f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
 
 
-        float percent = FlarialGUI::Slider(7, toggleX + FlarialGUI::SettingsTextWidth("Modifier "),
+        float percent = MusuiGUI::Slider(7, toggleX + MusuiGUI::SettingsTextWidth("Modifier "),
                                            toggleY, this->settings.getSettingByName<float>("modifier")->value, 30, 0,
                                            0);
 
@@ -74,56 +74,56 @@ public:
 
         textWidth *= 1.5f;
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"Animation Speed", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"Animation Speed", textWidth * 3.0f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
 
 
-        percent = FlarialGUI::Slider(8, toggleX + FlarialGUI::SettingsTextWidth("Animation Speed "),
+        percent = MusuiGUI::Slider(8, toggleX + MusuiGUI::SettingsTextWidth("Animation Speed "),
                                      toggleY, this->settings.getSettingByName<float>("anim")->value, 0.40);
 
         this->settings.getSettingByName<float>("anim")->value = percent;
 
         toggleY += Constraints::SpacingConstraint(0.25, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX + Constraints::SpacingConstraint(0.38, textWidth), toggleY,
+        MusuiGUI::MusuiTextWithFont(toggleX + Constraints::SpacingConstraint(0.38, textWidth), toggleY,
                                         L"Save Modifier", textWidth * 3.0f, textHeight, DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
-        if (FlarialGUI::Toggle(1, toggleX, toggleY, this->settings.getSettingByName<bool>(
+        if (MusuiGUI::Toggle(1, toggleX, toggleY, this->settings.getSettingByName<bool>(
                 "SaveModifier")->value)) this->settings.getSettingByName<bool>("SaveModifier")->value = !this->settings.getSettingByName<bool>("SaveModifier")->value;
 
         toggleX = Constraints::PercentageConstraint(0.55, "left");
         toggleY = Constraints::PercentageConstraint(0.10, "top");
 
-        FlarialGUI::FlarialTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY,
+        MusuiGUI::MusuiTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY,
                                         L"Hide hand", textWidth * 3.0f, textHeight, DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
-        if (FlarialGUI::Toggle(2, toggleX, toggleY, this->settings.getSettingByName<bool>(
+        if (MusuiGUI::Toggle(2, toggleX, toggleY, this->settings.getSettingByName<bool>(
                 "hidehand")->value)) this->settings.getSettingByName<bool>("hidehand")->value = !this->settings.getSettingByName<bool>("hidehand")->value;
 
         toggleY += Constraints::SpacingConstraint(0.25, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY,
+        MusuiGUI::MusuiTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY,
                                         L"Hide modules", textWidth * 3.0f, textHeight, DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
-        if (FlarialGUI::Toggle(3, toggleX, toggleY, this->settings.getSettingByName<bool>(
+        if (MusuiGUI::Toggle(3, toggleX, toggleY, this->settings.getSettingByName<bool>(
                 "hidemodules")->value)) this->settings.getSettingByName<bool>("hidemodules")->value = !this->settings.getSettingByName<bool>("hidemodules")->value;
 
         toggleY += Constraints::SpacingConstraint(0.25, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY,
+        MusuiGUI::MusuiTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY,
                                         L"Disable animation", textWidth * 3.0f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
-        if (FlarialGUI::Toggle(4, toggleX, toggleY, this->settings.getSettingByName<bool>(
+        if (MusuiGUI::Toggle(4, toggleX, toggleY, this->settings.getSettingByName<bool>(
                 "disableanim")->value)) this->settings.getSettingByName<bool>("disableanim")->value = !this->settings.getSettingByName<bool>("disableanim")->value;
 
-        FlarialGUI::UnsetScrollView();
+        MusuiGUI::UnsetScrollView();
 
     }
 };

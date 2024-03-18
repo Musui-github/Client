@@ -81,7 +81,7 @@ private:
 		if (strcmp(texturePtr->GetFilePath().c_str(), "textures/ui/selected_hotbar_slot") == 0)
 		{
 			static float lerpedPos = imagePos.x;
-			lerpedPos = animate(imagePos.x, lerpedPos, (0.016f * mod->settings.getSettingByName<float>("hotbarSpeed")->value) * FlarialGUI::frameFactor);
+			lerpedPos = animate(imagePos.x, lerpedPos, (0.016f * mod->settings.getSettingByName<float>("hotbarSpeed")->value) * MusuiGUI::frameFactor);
 			imagePos.x = lerpedPos;
 		}
 		Memory mem;

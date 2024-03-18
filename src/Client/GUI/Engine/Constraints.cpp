@@ -10,9 +10,9 @@ float Constraints::PercentageConstraint(float percentage, const std::string& edg
     float y = 0;
 
     // Check if there is a dimension stack and use the top element's dimensions instead
-    if (!FlarialGUI::dimension_stack.empty() && !ignore_stack)
+    if (!MusuiGUI::dimension_stack.empty() && !ignore_stack)
     {
-        Dimension& top = FlarialGUI::dimension_stack.top();
+        Dimension& top = MusuiGUI::dimension_stack.top();
         screenWidth = top.width;
         screenHeight = top.height;
         x = top.x;
@@ -50,15 +50,15 @@ float Constraints::RelativeConstraint(float percent, const std::string& dimensio
     float screenWidth;
     float screenHeight;
 
-    if (ignore_stack || FlarialGUI::dimension_stack.empty())
+    if (ignore_stack || MusuiGUI::dimension_stack.empty())
     {
         screenWidth = MC::windowSize.x;
         screenHeight = MC::windowSize.y;
     }
     else
     {
-        screenWidth = FlarialGUI::dimension_stack.top().width;
-        screenHeight = FlarialGUI::dimension_stack.top().height;
+        screenWidth = MusuiGUI::dimension_stack.top().width;
+        screenHeight = MusuiGUI::dimension_stack.top().height;
     }
 
 
@@ -84,17 +84,17 @@ Vec2<float> Constraints::CenterConstraint(float width, float height, const std::
     float parentX = 0;
     float parentY = 0;
 
-    if (ignore_stack || FlarialGUI::dimension_stack.empty())
+    if (ignore_stack || MusuiGUI::dimension_stack.empty())
     {
         screenWidth = MC::windowSize.x;
         screenHeight = MC::windowSize.y;
     }
     else
     {
-        screenWidth = FlarialGUI::dimension_stack.top().width;
-        screenHeight = FlarialGUI::dimension_stack.top().height;
-        parentX = FlarialGUI::dimension_stack.top().x;
-        parentY = FlarialGUI::dimension_stack.top().y;
+        screenWidth = MusuiGUI::dimension_stack.top().width;
+        screenHeight = MusuiGUI::dimension_stack.top().height;
+        parentX = MusuiGUI::dimension_stack.top().x;
+        parentY = MusuiGUI::dimension_stack.top().y;
     }
 
     xy.x = (screenWidth - width) / 2.0f + parentX;

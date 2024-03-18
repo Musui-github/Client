@@ -22,7 +22,7 @@ class dvdListener : public Listener {
             float height = 83 * module->settings.getSettingByName<float>("scale")->value;
             float width = 187 * module->settings.getSettingByName<float>("scale")->value;
 
-            FlarialGUI::Image("\\Flarial\\assets\\dvdlogo-0" + std::to_string(color) + ".png",
+            MusuiGUI::Image("\\Musui\\assets\\dvdlogo-0" + std::to_string(color) + ".png",
                 D2D1::RectF(x, y, x + width, y + height));
 
             x += module->settings.getSettingByName<float>("xveloc")->value * xv;

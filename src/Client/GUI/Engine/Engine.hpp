@@ -51,7 +51,7 @@ struct TextBoxStruct
     bool isAt1 = false;
 };
 
-struct FlarialGradientStops
+struct MusuiGradientStops
 {
     float position;
     D2D1_COLOR_F color;
@@ -149,7 +149,7 @@ public:
     static std::map<std::string, ID2D1Bitmap*> eimages;
 };
 
-namespace FlarialGUI
+namespace MusuiGUI
 {
     std::stack<Dimension> inline dimension_stack;
     std::vector<float> inline darkenAmounts(10000);
@@ -216,7 +216,7 @@ namespace FlarialGUI
     //std::wstring to_wide(const std::string& str);
     //std::string from_wide(const std::wstring& wstr);
     void Image(const std::string imageName, const D2D1_RECT_F rect);
-    void FlarialText(float x, float y, const wchar_t* text, float width, const float height,
+    void MusuiText(float x, float y, const wchar_t* text, float width, const float height,
         const DWRITE_TEXT_ALIGNMENT alignment);
     void SetScrollView(float x, float y, float width, float height);
     void UnsetScrollView();
@@ -286,12 +286,12 @@ namespace FlarialGUI
     std::wstring to_wide(const std::string& str);
 
     void
-        FlarialTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
+        MusuiTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
             const DWRITE_TEXT_ALIGNMENT alignment, const float fontSize,
             const DWRITE_FONT_WEIGHT weight, bool moduleFont = false);
 
     void
-        FlarialTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
+        MusuiTextWithFont(float x, float y, const wchar_t* text, const float width, const float height,
             const DWRITE_TEXT_ALIGNMENT alignment, const float fontSize,
             const DWRITE_FONT_WEIGHT weight, D2D1_COLOR_F color, bool moduleFont = false);
 

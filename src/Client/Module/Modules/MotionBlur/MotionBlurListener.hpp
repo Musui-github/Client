@@ -38,8 +38,8 @@ public:
 
             ID2D1Bitmap* currentFrame = nullptr;
 
-            if (SwapchainHook::queue != nullptr) FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &currentFrame);
-            else FlarialGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &currentFrame);
+            if (SwapchainHook::queue != nullptr) MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmaps[SwapchainHook::currentBitmap], &currentFrame);
+            else MusuiGUI::CopyBitmap(SwapchainHook::D2D1Bitmap, &currentFrame);
 
             previousFrames.push_back(currentFrame);
 

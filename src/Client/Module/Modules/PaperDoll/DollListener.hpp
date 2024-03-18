@@ -38,7 +38,7 @@ public:
 
             if(!enabled && ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value) {
                 if(!ModuleManager::getModule("ArmorHUD")->settings.getSettingByName<bool>("enabled")->value)
-                FlarialGUI::Notify("To change the position of the Paperdoll, Please click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("editmenubind")->value + " in the settings tab.");
+                MusuiGUI::Notify("To change the position of the Paperdoll, Please click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("editmenubind")->value + " in the settings tab.");
                 enabled = true;
             }
 
@@ -56,9 +56,9 @@ public:
                 currentPos = { DollListener::oriXY.x, DollListener::oriXY.y };
 
             if(ClickGUIRenderer::editmenu)
-                FlarialGUI::SetWindowRect(currentPos.x, currentPos.y, width, height, 19);
+                MusuiGUI::SetWindowRect(currentPos.x, currentPos.y, width, height, 19);
 
-            Vec2<float> vec2 = FlarialGUI::CalculateMovedXY(currentPos.x , currentPos.y, 19, width, height);
+            Vec2<float> vec2 = MusuiGUI::CalculateMovedXY(currentPos.x , currentPos.y, 19, width, height);
 
 
             currentPos.x = vec2.x;
@@ -72,7 +72,7 @@ public:
             module->settings.setValue("percentageY", percentages.y);
 
             if(ClickGUIRenderer::editmenu)
-                FlarialGUI::UnsetWindowRect();
+                MusuiGUI::UnsetWindowRect();
         } else {
             enabled = false;
         }

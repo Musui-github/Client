@@ -23,8 +23,8 @@ class GUIMouseListener : public Listener {
 
         if(event.GetButton() == MouseButton::Scroll)
         {
-            accumilatedPos += (event.GetAction() == MouseAction::SCROLL_UP) ? FlarialGUI::scrollposmodifier : -FlarialGUI::scrollposmodifier;
-            accumilatedBarPos += (event.GetAction() == MouseAction::SCROLL_UP) ? FlarialGUI::barscrollposmodifier : -FlarialGUI::barscrollposmodifier;
+            accumilatedPos += (event.GetAction() == MouseAction::SCROLL_UP) ? MusuiGUI::scrollposmodifier : -MusuiGUI::scrollposmodifier;
+            accumilatedBarPos += (event.GetAction() == MouseAction::SCROLL_UP) ? MusuiGUI::barscrollposmodifier : -MusuiGUI::barscrollposmodifier;
         }
 
         if(ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value) event.setCancelled(true);

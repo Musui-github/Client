@@ -20,7 +20,7 @@ class PatarHDListener : public Listener {
         if(module->settings.getSettingByName<bool>("enabled")->value && SDK::clientInstance->getTopScreenName() == "hud_screen"){
             float s = Constraints::RelativeConstraint(0.35, "height", true) * module->settings.getSettingByName<float>("scale")->value;
             if (module->settings.getSettingByName<bool>("dvdmode")->value) {
-                FlarialGUI::Image("\\Flarial\\assets\\patar.jpg",
+                MusuiGUI::Image("\\Musui\\assets\\patar.jpg",
                     D2D1::RectF(x, y, x + s, y + s));
 
                 x += module->settings.getSettingByName<float>("xveloc")->value * xv;
@@ -33,7 +33,7 @@ class PatarHDListener : public Listener {
             }
             else {
                 Vec2<float> center = Constraints::CenterConstraint(s, s);
-                FlarialGUI::Image("\\Flarial\\assets\\patar.jpg",
+                MusuiGUI::Image("\\Musui\\assets\\patar.jpg",
                     D2D1::RectF(center.x, center.y, center.x + s, center.y + s));
             }
         }

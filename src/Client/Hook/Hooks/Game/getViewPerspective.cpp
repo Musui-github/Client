@@ -63,7 +63,7 @@ int getViewPerspectiveHook::callback(uintptr_t* a1) {
 
 
 		if (freemod->settings.getSettingByName<bool>("enabled")->value && RaknetTickHook::towriteip.find("hive") != std::string::npos || freemod->settings.getSettingByName<bool>("enabled")->value && RaknetTickHook::towriteip.find("galaxite") != std::string::npos) {
-			FlarialGUI::Notify("Can't use freelook on " + RaknetTickHook::towriteip);
+			MusuiGUI::Notify("Can't use freelook on " + RaknetTickHook::towriteip);
 			freemod->settings.getSettingByName<bool>("enabled")->value = false;
 		}
 	}

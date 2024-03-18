@@ -9,7 +9,7 @@ class NickModule : public Module {
 
 public:
 
-    NickModule() : Module("Nick", "Hides your username and replace it with something else.\nWorks everywhere (chat, pause, third person, etc)\nOther people will not be able to see your nick.", "\\Flarial\\assets\\icognito.png", 'C') {
+    NickModule() : Module("Nick", "Hides your username and replace it with something else.\nWorks everywhere (chat, pause, third person, etc)\nOther people will not be able to see your nick.", "\\Musui\\assets\\icognito.png", 'C') {
 
         onEnable();
 
@@ -34,7 +34,7 @@ public:
             settings.addSetting("enabled", false);
 
         if (settings.getSettingByName<std::string>("nick") == nullptr)
-            settings.addSetting<std::string>("nick", "Flarial User");
+            settings.addSetting<std::string>("nick", "Musui User");
 
     }
 
@@ -64,6 +64,6 @@ public:
         const float textHeight = Constraints::RelativeConstraint(0.029, "height", true);
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
-        FlarialGUI::TextBoxVisual(5, settings.getSettingByName<std::string>("nick")->value, 16, toggleX, toggleY);
+        MusuiGUI::TextBoxVisual(5, settings.getSettingByName<std::string>("nick")->value, 16, toggleX, toggleY);
     }
 };

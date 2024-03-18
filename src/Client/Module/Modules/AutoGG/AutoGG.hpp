@@ -10,7 +10,7 @@ class AutoGG : public Module {
 public:
 
 
-    AutoGG() : Module("Auto GG", "Automatically sends a message when you\nwin a game. (Doesn't work everywhere)", "\\Flarial\\assets\\like.png", 'o') {
+    AutoGG() : Module("Auto GG", "Automatically sends a message when you\nwin a game. (Doesn't work everywhere)", "\\Musui\\assets\\like.png", 'o') {
 
         onEnable();
 
@@ -41,7 +41,7 @@ public:
         const float textWidth = Constraints::RelativeConstraint(0.12, "height", true);
         const float textHeight = Constraints::RelativeConstraint(0.029, "height", true);
 
-        FlarialGUI::TextBoxVisual(5, settings.getSettingByName<std::string>("text")->value, 50, toggleX, toggleY);
+        MusuiGUI::TextBoxVisual(5, settings.getSettingByName<std::string>("text")->value, 50, toggleX, toggleY);
 
     }
 };

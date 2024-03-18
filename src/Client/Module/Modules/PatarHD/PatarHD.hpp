@@ -9,7 +9,7 @@ class PatarHD : public Module {
 
 public:
 
-    PatarHD() : Module("PatarHD", "Who is this now?", "\\Flarial\\assets\\skull.png", 'C') {
+    PatarHD() : Module("PatarHD", "Who is this now?", "\\Musui\\assets\\skull.png", 'C') {
 
         onEnable();
 
@@ -54,54 +54,54 @@ public:
         const float textWidth = Constraints::RelativeConstraint(0.12, "height", true);
         const float textHeight = Constraints::RelativeConstraint(0.029, "height", true);
 
-        FlarialGUI::ScrollBar(toggleX, toggleY, 140, Constraints::SpacingConstraint(7.5, textWidth), 2);
-        FlarialGUI::SetScrollView(toggleX, Constraints::PercentageConstraint(0.00, "top"), Constraints::RelativeConstraint(1.0, "width"), Constraints::RelativeConstraint(1.0f, "height"));
+        MusuiGUI::ScrollBar(toggleX, toggleY, 140, Constraints::SpacingConstraint(7.5, textWidth), 2);
+        MusuiGUI::SetScrollView(toggleX, Constraints::PercentageConstraint(0.00, "top"), Constraints::RelativeConstraint(1.0, "width"), Constraints::RelativeConstraint(1.0f, "height"));
         
-        if (FlarialGUI::Toggle(0, toggleX, toggleY, this->settings.getSettingByName<bool>(
+        if (MusuiGUI::Toggle(0, toggleX, toggleY, this->settings.getSettingByName<bool>(
             "dvdmode")->value)) this->settings.getSettingByName<bool>("dvdmode")->value = !this->settings.getSettingByName<bool>("dvdmode")->value;
 
-        FlarialGUI::FlarialTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY, L"DVD Mode", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX + Constraints::SpacingConstraint(0.60, textWidth), toggleY, L"DVD Mode", textWidth * 3.0f, textHeight,
             DWRITE_TEXT_ALIGNMENT_LEADING,
             Constraints::RelativeConstraint(0.12, "height", true),
             DWRITE_FONT_WEIGHT_NORMAL);
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"X Velocity", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"X Velocity", textWidth * 3.0f, textHeight,
             DWRITE_TEXT_ALIGNMENT_LEADING,
             Constraints::RelativeConstraint(0.12, "height", true),
             DWRITE_FONT_WEIGHT_NORMAL);
 
-        float percent = FlarialGUI::Slider(0, toggleX + FlarialGUI::SettingsTextWidth("X Velocity "),
+        float percent = MusuiGUI::Slider(0, toggleX + MusuiGUI::SettingsTextWidth("X Velocity "),
             toggleY, this->settings.getSettingByName<float>("xveloc")->value, 25.0f);
 
         this->settings.getSettingByName<float>("xveloc")->value = percent;
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"Y Velocity", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"Y Velocity", textWidth * 3.0f, textHeight,
             DWRITE_TEXT_ALIGNMENT_LEADING,
             Constraints::RelativeConstraint(0.12, "height", true),
             DWRITE_FONT_WEIGHT_NORMAL);
 
-        percent = FlarialGUI::Slider(1, toggleX + FlarialGUI::SettingsTextWidth("Y Velocity "),
+        percent = MusuiGUI::Slider(1, toggleX + MusuiGUI::SettingsTextWidth("Y Velocity "),
             toggleY, this->settings.getSettingByName<float>("yveloc")->value, 25.0f);
 
         this->settings.getSettingByName<float>("yveloc")->value = percent;
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"Scale", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"Scale", textWidth * 3.0f, textHeight,
             DWRITE_TEXT_ALIGNMENT_LEADING,
             Constraints::RelativeConstraint(0.12, "height", true),
             DWRITE_FONT_WEIGHT_NORMAL);
 
-        percent = FlarialGUI::Slider(2, toggleX + FlarialGUI::SettingsTextWidth("Scale "),
+        percent = MusuiGUI::Slider(2, toggleX + MusuiGUI::SettingsTextWidth("Scale "),
             toggleY, this->settings.getSettingByName<float>("scale")->value, 5.0f);
 
         this->settings.getSettingByName<float>("scale")->value = percent;
 
-        FlarialGUI::UnsetScrollView();
+        MusuiGUI::UnsetScrollView();
 
     }
 };

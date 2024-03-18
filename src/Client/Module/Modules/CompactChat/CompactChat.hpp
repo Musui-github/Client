@@ -10,7 +10,7 @@ class CompactChat : public Module {
 public:
 
 
-    CompactChat() : Module("Compact Chat", "Tired of spammers? Try this out!\nPuts repeated messages into 1 message.", "\\Flarial\\assets\\block_break_indicator.png", 'o') {
+    CompactChat() : Module("Compact Chat", "Tired of spammers? Try this out!\nPuts repeated messages into 1 message.", "\\Musui\\assets\\block_break_indicator.png", 'o') {
 
         onEnable();
 

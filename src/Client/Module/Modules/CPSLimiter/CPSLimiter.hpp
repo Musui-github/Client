@@ -8,7 +8,7 @@ class CPSLimiter : public Module {
 public:
 
 
-    CPSLimiter() : Module("CPS Limiter", "Limit how many clicks you can\nregister per second.", "\\Flarial\\assets\\stop.png", 'o') {
+    CPSLimiter() : Module("CPS Limiter", "Limit how many clicks you can\nregister per second.", "\\Musui\\assets\\stop.png", 'o') {
 
         onEnable();
 
@@ -40,12 +40,12 @@ public:
         const float textWidth = Constraints::RelativeConstraint(0.12, "height", true);
         const float textHeight = Constraints::RelativeConstraint(0.029, "height", true);
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"Left", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"Left", textWidth * 3.0f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
 
-        float percent = FlarialGUI::Slider(4, toggleX + FlarialGUI::SettingsTextWidth("Left "),
+        float percent = MusuiGUI::Slider(4, toggleX + MusuiGUI::SettingsTextWidth("Left "),
                                            toggleY, this->settings.getSettingByName<float>("Left")->value, 100.0f,
                                            1.00f, 0);
 
@@ -53,12 +53,12 @@ public:
 
         toggleY += Constraints::SpacingConstraint(0.35, textWidth);
 
-        FlarialGUI::FlarialTextWithFont(toggleX, toggleY, L"Right", textWidth * 3.0f, textHeight,
+        MusuiGUI::MusuiTextWithFont(toggleX, toggleY, L"Right", textWidth * 3.0f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING,
                                         Constraints::RelativeConstraint(0.12, "height", true),
                                         DWRITE_FONT_WEIGHT_NORMAL);
 
-        percent = FlarialGUI::Slider(5, toggleX + FlarialGUI::SettingsTextWidth("Right "),
+        percent = MusuiGUI::Slider(5, toggleX + MusuiGUI::SettingsTextWidth("Right "),
                                      toggleY, this->settings.getSettingByName<float>("Right")->value, 100.0f, 1.00f, 0);
 
         this->settings.getSettingByName<float>("Right")->value = percent;

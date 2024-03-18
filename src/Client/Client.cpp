@@ -7,7 +7,7 @@
 #include <wingdi.h>
 #include <wininet.h>
 
-std::string Client::settingspath = Utils::getRoamingPath() + "\\Flarial\\Config\\main.flarial";
+std::string Client::settingspath = Utils::getRoamingPath() + "\\Musui\\Config\\main.Musui";
 Settings Client::settings = Settings();
 
 void DownloadAndSave(std::string url, std::string path) {
@@ -16,7 +16,7 @@ void DownloadAndSave(std::string url, std::string path) {
         char test[256];
         strcpy(test, "https://cdn-c6f.pages.dev/");
         if (InternetCheckConnectionA(test, FLAG_ICC_FORCE_CONNECTION, 0))
-            URLDownloadToFileW(NULL, FlarialGUI::to_wide(url).c_str(), FlarialGUI::to_wide(path).c_str(), 0, NULL);
+            URLDownloadToFileW(NULL, MusuiGUI::to_wide(url).c_str(), MusuiGUI::to_wide(path).c_str(), 0, NULL);
     }
 
 }
@@ -26,31 +26,31 @@ bool Client::disable = false;
 
 void Client::initialize()
 {
-    std::filesystem::path folder_path(Utils::getRoamingPath() + "\\Flarial");
+    std::filesystem::path folder_path(Utils::getRoamingPath() + "\\Musui");
     if (!exists(folder_path))
     {
         create_directory(folder_path);
     }
 
-    std::filesystem::path folder_path2(Utils::getRoamingPath() + "\\Flarial\\assets");
+    std::filesystem::path folder_path2(Utils::getRoamingPath() + "\\Musui\\assets");
     if (!exists(folder_path2))
     {
         create_directory(folder_path2);
     }
 
-    std::filesystem::path folder_path3(Utils::getRoamingPath() + "\\Flarial\\logs");
+    std::filesystem::path folder_path3(Utils::getRoamingPath() + "\\Musui\\logs");
     if (!exists(folder_path3))
     {
         create_directory(folder_path3);
     }
 
-    std::filesystem::path folder_path4(Utils::getRoamingPath() + "\\Flarial\\Config");
+    std::filesystem::path folder_path4(Utils::getRoamingPath() + "\\Musui\\Config");
     if (!exists(folder_path4))
     {
         create_directory(folder_path4);
     }
 
-    std::string Path = Utils::getRoamingPath() + "\\Flarial\\assets\\";
+    std::string Path = Utils::getRoamingPath() + "\\Musui\\assets\\";
 
     std::pair<std::string, std::string> fileData[] = {
         { "https://cdn-c6f.pages.dev/assets/gear.png", Path + "gear.png" },
@@ -68,7 +68,7 @@ void Client::initialize()
         { "https://cdn-c6f.pages.dev/assets/fullbright.png", Path + "fullbright.png" },
         { "https://cdn-c6f.pages.dev/assets/frying-pan.png", Path + "frying-pan.png" },
         { "https://cdn-c6f.pages.dev/assets/font_bold.ttf", Path + "font_bold.ttf" },
-        { "https://cdn-c6f.pages.dev/assets/flarial-title.png", Path + "flarial-title.png" },
+        { "https://cdn-c6f.pages.dev/assets/Musui-title.png", Path + "Musui-title.png" },
         { "https://cdn-c6f.pages.dev/assets/combo.png", Path + "combo.png" },
         { "https://cdn-c6f.pages.dev/assets/reach.png", Path + "reach.png" },
         { "https://cdn-c6f.pages.dev/assets/keyboard.png", Path + "keyboard.png" },
@@ -184,13 +184,13 @@ void Client::initialize()
             thread.join();
         }
 
-    std::string fontpath = Utils::getRoamingPath() + "\\Flarial\\assets\\font.ttf";
+    std::string fontpath = Utils::getRoamingPath() + "\\Musui\\assets\\font.ttf";
     AddFontResource(fontpath.c_str());
 
-    fontpath = Utils::getRoamingPath() + "\\Flarial\\assets\\font_bold.ttf";
+    fontpath = Utils::getRoamingPath() + "\\Musui\\assets\\font_bold.ttf";
     AddFontResource(fontpath.c_str());
 
-    fontpath = Utils::getRoamingPath() + "\\Flarial\\assets\\minecraftia.ttf";
+    fontpath = Utils::getRoamingPath() + "\\Musui\\assets\\minecraftia.ttf";
     AddFontResource(fontpath.c_str());
 
     Logger::initialize();
@@ -208,7 +208,7 @@ void Client::initialize()
     Logger::debug("Sending");
 
     if (!Client::disable) {
-        FlarialGUI::Notify("Click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("keybind")->value + " to open the menu in-game.");
+        MusuiGUI::Notify("Click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("keybind")->value + " to open the menu in-game.");
     }
 }
 

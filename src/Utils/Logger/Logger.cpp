@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 
-std::string Logger::file = Utils::getRoamingPath() + "\\Flarial\\logs\\latest.log";
+std::string Logger::file = Utils::getRoamingPath() + "\\Musui\\logs\\latest.log";
 
 void Logger::writeToFile(std::string str)
 {

@@ -21,8 +21,8 @@ private:
             if (ModuleManager::getModule("Fog Color")->settings.getSettingByName<bool>("enabled")->value) {
 
                 D2D1_COLOR_F color2;
-                if (ModuleManager::getModule("Fog Color")->settings.getSettingByName<bool>("color_rgb")->value) color2 = FlarialGUI::rgbColor;
-                else color2 = FlarialGUI::HexToColorF(ModuleManager::getModule("Fog Color")->settings.getSettingByName<std::string>("color")->value);
+                if (ModuleManager::getModule("Fog Color")->settings.getSettingByName<bool>("color_rgb")->value) color2 = MusuiGUI::rgbColor;
+                else color2 = MusuiGUI::HexToColorF(ModuleManager::getModule("Fog Color")->settings.getSettingByName<std::string>("color")->value);
 
                 color.r = color2.r;
                 color.g = color2.g;

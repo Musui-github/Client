@@ -56,7 +56,7 @@ std::string Utils::removeColorCodes(const std::string& input) {
     std::string result;
     bool skipNext = false;
 
-    for (wchar_t c : FlarialGUI::to_wide(input)) {
+    for (wchar_t c : MusuiGUI::to_wide(input)) {
         if (skipNext) {
             skipNext = false;
         } else if (c == L'§') {

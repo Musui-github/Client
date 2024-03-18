@@ -32,7 +32,7 @@ void DrawUtils::addLine(Vec2<float> start, Vec2<float> end, float lineWidth, D2D
         return;
     }
 
-    D2D::context->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), FlarialGUI::getBrush(color), lineWidth);
+    D2D::context->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), MusuiGUI::getBrush(color), lineWidth);
 
 }
 
@@ -57,7 +57,7 @@ void DrawUtils::addBox(Vec3<float> lower, Vec3<float> upper, float lineWidth, in
     viewMatrix.WorldToScreen(Vec3<float>(0, -60, 0), start);
     viewMatrix.WorldToScreen(Vec3<float>(15, -60, 0), end);
     std::cout << start.x << std::endl;
-    D2D::context->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), FlarialGUI::getBrush(color), lineWidth);
+    D2D::context->DrawLine(D2D1::Point2F(start.x, start.y), D2D1::Point2F(end.x, end.y), MusuiGUI::getBrush(color), lineWidth);
 */
 
     if (mode == 1 || mode == 2) {

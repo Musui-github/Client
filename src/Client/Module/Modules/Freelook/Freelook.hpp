@@ -8,7 +8,7 @@ class FreeLook : public Module {
 
 public:
 
-    FreeLook() : Module("FreeLook", "Freely move your camera in 3rd person mode\nwhile keeping the player rotation the same.", "\\Flarial\\assets\\freelook.png", 'F') {
+    FreeLook() : Module("FreeLook", "Freely move your camera in 3rd person mode\nwhile keeping the player rotation the same.", "\\Musui\\assets\\freelook.png", 'F') {
 
         onEnable();
 
@@ -44,13 +44,13 @@ public:
         float x = Constraints::PercentageConstraint(0.019, "left");
         float y = Constraints::PercentageConstraint(0.10, "top");
 
-        FlarialGUI::ScrollBar(x, y, 140, Constraints::SpacingConstraint(5.5, textWidth), 2);
-        FlarialGUI::SetScrollView(x, y, Constraints::RelativeConstraint(1.0, "width"), Constraints::RelativeConstraint(0.90, "height"));
+        MusuiGUI::ScrollBar(x, y, 140, Constraints::SpacingConstraint(5.5, textWidth), 2);
+        MusuiGUI::SetScrollView(x, y, Constraints::RelativeConstraint(1.0, "width"), Constraints::RelativeConstraint(0.90, "height"));
 
-        FlarialGUI::KeybindSelector(0, x, y, settings.getSettingByName<std::string>("keybind")->value);
+        MusuiGUI::KeybindSelector(0, x, y, settings.getSettingByName<std::string>("keybind")->value);
 
 
-        FlarialGUI::UnsetScrollView();
+        MusuiGUI::UnsetScrollView();
 
     }
 };

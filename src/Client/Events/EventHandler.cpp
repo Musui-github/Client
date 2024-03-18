@@ -102,7 +102,7 @@ void EventHandler::onRender(RenderEvent &event) {
 
         listener->onRender(event);
 
-        FlarialGUI::displayToolTips();
+        MusuiGUI::displayToolTips();
     }
 }
 

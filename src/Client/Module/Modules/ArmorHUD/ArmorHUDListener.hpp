@@ -36,7 +36,7 @@ public:
         if(SDK::clientInstance->getTopScreenName() == "hud_screen" && module->settings.getSettingByName<bool>("enabled")->value || SDK::clientInstance->getTopScreenName() == "pause_screen" && module->settings.getSettingByName<bool>("enabled")->value) {
 
             if(!enabled && ModuleManager::getModule("ClickGUI")->settings.getSettingByName<bool>("enabled")->value) {
-                FlarialGUI::Notify("To change the position of ArmorHUD, Please click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("editmenubind")->value + " in the settings tab.");
+                MusuiGUI::Notify("To change the position of ArmorHUD, Please click " + ModuleManager::getModule("ClickGUI")->settings.getSettingByName<std::string>("editmenubind")->value + " in the settings tab.");
                 enabled = true;
             }
 
@@ -55,15 +55,15 @@ public:
 
             if(ClickGUIRenderer::editmenu) {
                 if (!module->settings.getSettingByName<bool>("vertical")->value)
-                    FlarialGUI::SetWindowRect(currentPos.x, currentPos.y, s * 3 + spacing * 3, s, 18);
-                else FlarialGUI::SetWindowRect(currentPos.x, currentPos.y, s, s * 3 + spacing * 3, 18);
+                    MusuiGUI::SetWindowRect(currentPos.x, currentPos.y, s * 3 + spacing * 3, s, 18);
+                else MusuiGUI::SetWindowRect(currentPos.x, currentPos.y, s, s * 3 + spacing * 3, 18);
             }
 
             Vec2<float> vec2;
             
             if (!module->settings.getSettingByName<bool>("vertical")->value)
-             vec2 = FlarialGUI::CalculateMovedXY(currentPos.x , currentPos.y, 18, s * 3 + spacing * 3, s);
-            else vec2 = FlarialGUI::CalculateMovedXY(currentPos.x , currentPos.y, 18, s, s * 3 + spacing * 3);
+             vec2 = MusuiGUI::CalculateMovedXY(currentPos.x , currentPos.y, 18, s * 3 + spacing * 3, s);
+            else vec2 = MusuiGUI::CalculateMovedXY(currentPos.x , currentPos.y, 18, s, s * 3 + spacing * 3);
 
             currentPos.x = vec2.x;
             currentPos.y = vec2.y;
@@ -76,7 +76,7 @@ public:
             module->settings.setValue("percentageY", percentages.y);
 
             if(ClickGUIRenderer::editmenu)
-            FlarialGUI::UnsetWindowRect();
+            MusuiGUI::UnsetWindowRect();
         } else {
             enabled = false;
         }

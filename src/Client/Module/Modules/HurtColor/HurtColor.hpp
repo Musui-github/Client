@@ -8,7 +8,7 @@ class HurtColor : public Module {
 
 public:
 
-    HurtColor() : Module("Hurt Color", "Change the color when you hit entities.", "\\Flarial\\assets\\hurt.png", 'C') {
+    HurtColor() : Module("Hurt Color", "Change the color when you hit entities.", "\\Musui\\assets\\hurt.png", 'C') {
 
         onEnable();
 
@@ -41,12 +41,12 @@ public:
         float x = Constraints::PercentageConstraint(0.019, "left");
         float y = Constraints::PercentageConstraint(0.10, "top");
 
-        FlarialGUI::FlarialTextWithFont(x, y, FlarialGUI::to_wide("Color").c_str(), textWidth * 6.9f, textHeight,
+        MusuiGUI::MusuiTextWithFont(x, y, MusuiGUI::to_wide("Color").c_str(), textWidth * 6.9f, textHeight,
                                         DWRITE_TEXT_ALIGNMENT_LEADING, Constraints::SpacingConstraint(1.05, textWidth),
                                         DWRITE_FONT_WEIGHT_NORMAL);
-        FlarialGUI::ColorPicker(0, x + FlarialGUI::SettingsTextWidth("Color "), y - Constraints::SpacingConstraint(0.017, textWidth), settings.getSettingByName<std::string>("color")->value, settings.getSettingByName<float>("colorOpacity")->value, settings.getSettingByName<bool>("color_rgb")->value);
+        MusuiGUI::ColorPicker(0, x + MusuiGUI::SettingsTextWidth("Color "), y - Constraints::SpacingConstraint(0.017, textWidth), settings.getSettingByName<std::string>("color")->value, settings.getSettingByName<float>("colorOpacity")->value, settings.getSettingByName<bool>("color_rgb")->value);
 
-        FlarialGUI::ColorPickerWindow(0, settings.getSettingByName<std::string>("color")->value, settings.getSettingByName<float>("colorOpacity")->value, settings.getSettingByName<bool>("color_rgb")->value);
+        MusuiGUI::ColorPickerWindow(0, settings.getSettingByName<std::string>("color")->value, settings.getSettingByName<float>("colorOpacity")->value, settings.getSettingByName<bool>("color_rgb")->value);
 
     }
 };

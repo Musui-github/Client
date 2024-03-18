@@ -38,7 +38,7 @@ private:
 			if (inserver) {
 				if (fovchanger->settings.getSettingByName<float>("fovvalue")->value > 150) {
 					if (!notified150FOV) {
-						FlarialGUI::Notify("FOV Changer has been limmited to 150 on servers.");
+						MusuiGUI::Notify("FOV Changer has been limmited to 150 on servers.");
 						notified150FOV = true;
 					}
 					fovchanger->settings.getSettingByName<float>("fovvalue")->value = 150;
@@ -60,10 +60,10 @@ private:
 			}
 			else {
 				if (zom->settings.getSettingByName<bool>("enabled")->value) {
-					if (fov > 180) currentZoomVal = std::lerp(currentZoomVal, fov + ZoomListener::zoomValue, animspeed * FlarialGUI::frameFactor);
-					else currentZoomVal = std::lerp(currentZoomVal, ZoomListener::zoomValue, animspeed * FlarialGUI::frameFactor);
+					if (fov > 180) currentZoomVal = std::lerp(currentZoomVal, fov + ZoomListener::zoomValue, animspeed * MusuiGUI::frameFactor);
+					else currentZoomVal = std::lerp(currentZoomVal, ZoomListener::zoomValue, animspeed * MusuiGUI::frameFactor);
 				}
-				else currentZoomVal = std::lerp(currentZoomVal, fov, zom->settings.getSettingByName<float>("anim")->value * FlarialGUI::frameFactor);
+				else currentZoomVal = std::lerp(currentZoomVal, fov, zom->settings.getSettingByName<float>("anim")->value * MusuiGUI::frameFactor);
 			}
 			fov = currentZoomVal;
 		}

@@ -29,7 +29,7 @@ public:
         icon = eicon;
         keybind = ekey;
         settings = Settings();
-        settingspath = Utils::getRoamingPath() + "\\Flarial\\Config\\" + name + ".flarial";
+        settingspath = Utils::getRoamingPath() + "\\Musui\\Config\\" + name + ".Musui";
 
         CheckSettingsFile();
         LoadSettings();
@@ -179,8 +179,8 @@ public:
                 return false;
             }
         }
-        if (FlarialGUI::inMenu) return false;
-        for (TextBoxStruct& i : FlarialGUI::TextBoxes) if (i.isActive) return false;
+        if (MusuiGUI::inMenu) return false;
+        for (TextBoxStruct& i : MusuiGUI::TextBoxes) if (i.isActive) return false;
         if (SDK::CurrentScreen == "chat_screen") return false;
         // All keys in the keybind are being held down
         return true;
@@ -198,8 +198,8 @@ public:
             }
         }
 
-        if (FlarialGUI::inMenu) return false;
-        for (TextBoxStruct& i : FlarialGUI::TextBoxes) if (i.isActive) return false;
+        if (MusuiGUI::inMenu) return false;
+        for (TextBoxStruct& i : MusuiGUI::TextBoxes) if (i.isActive) return false;
         // All keys in the keybind are being held down
         if (SDK::CurrentScreen == "chat_screen") return false;
         return true;

@@ -47,11 +47,11 @@ void ResizeHook::CleanShit(bool isResize) {
 
 	}
 
-	for (auto& entry : FlarialGUI::cachedBitmaps) {
+	for (auto& entry : MusuiGUI::cachedBitmaps) {
 		ID2D1Image* bitmap = entry.second.get();
 		Memory::SafeRelease(bitmap);
 	}
-	FlarialGUI::cachedBitmaps.clear();
+	MusuiGUI::cachedBitmaps.clear();
 
 	ClickGUIElements::images.clear();
 
@@ -67,24 +67,24 @@ void ResizeHook::CleanShit(bool isResize) {
 
 	}
 	/*
-	for (auto& i : FlarialGUI::brushCache) {
+	for (auto& i : MusuiGUI::brushCache) {
 		Memory::SafeRelease(i.second);
 	}
 	*/
 
-	FlarialGUI::brushCache.clear();
+	MusuiGUI::brushCache.clear();
 	/*
-	for (auto& i : FlarialGUI::gradientBrushCache) {
+	for (auto& i : MusuiGUI::gradientBrushCache) {
 		Memory::SafeRelease(i.second);
 	}
 	*/
-	FlarialGUI::gradientBrushCache.clear();
+	MusuiGUI::gradientBrushCache.clear();
 	/*
-	for (auto& i : FlarialGUI::textFormatCache) {
+	for (auto& i : MusuiGUI::textFormatCache) {
 		Memory::SafeRelease(i.second);
 	}
 	*/
-	FlarialGUI::textFormatCache.clear();
+	MusuiGUI::textFormatCache.clear();
 
 	ImagesClass::eimages.clear();
 
@@ -119,8 +119,8 @@ void ResizeHook::CleanShit(bool isResize) {
 		SwapchainHook::context->Flush();
 		Memory::SafeRelease(SwapchainHook::context);
 		Memory::SafeRelease(D2D::surface);
-		Memory::SafeRelease(FlarialGUI::blur);
-		Memory::SafeRelease(FlarialGUI::factory);
+		Memory::SafeRelease(MusuiGUI::blur);
+		Memory::SafeRelease(MusuiGUI::factory);
 
 		Memory::SafeRelease(SwapchainHook::d3d11On12Device);
 
@@ -136,6 +136,6 @@ void ResizeHook::CleanShit(bool isResize) {
 
 	}
 
-	FlarialGUI::scrollposmodifier = 0;
+	MusuiGUI::scrollposmodifier = 0;
 
 }
