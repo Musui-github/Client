@@ -28,7 +28,7 @@ void RaknetTickHook::callback(RaknetConnector* raknet)  {
 
                 if (SDK::clientInstance->getLocalPlayer() == nullptr) {
                     ip = "none";
-                    ActorBaseTick::allahuakbar = false;
+                    ActorBaseTick::nwordpls = false;
                 }
             }
 

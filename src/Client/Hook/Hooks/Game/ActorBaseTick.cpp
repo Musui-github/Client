@@ -6,7 +6,7 @@
 #include "RaknetTick.hpp"
 #include "../../../Client.hpp"
 
-bool ActorBaseTick::allahuakbar = false;
+bool ActorBaseTick::nwordpls = false;
 
 void ActorBaseTick::enableHook() {
 
@@ -28,9 +28,9 @@ void ActorBaseTick::callback(Actor *xd) {
 
     if(xd != nullptr) {
 
-        if(!allahuakbar && RaknetTickHook::towriteip.find("none") != std::string::npos) {
+        if(!nwordpls && RaknetTickHook::towriteip.find("none") != std::string::npos) {
 
-            allahuakbar = true;
+            nwordpls = true;
 
             std::string settingspath = Utils::getRoamingPath() + "\\Musui\\serverip.txt";
 

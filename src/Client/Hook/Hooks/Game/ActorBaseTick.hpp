@@ -15,5 +15,5 @@ public:
 
     void enableHook() override;
 
-    static bool allahuakbar;
+    static bool nwordpls;
 };

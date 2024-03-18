@@ -65,15 +65,16 @@ public:
 
 		float allahu = Constraints::RelativeConstraint(0.65);
 		float akbar = Constraints::RelativeConstraint(0.25);
-		Vec2<float> allahuakbar = Constraints::CenterConstraint(allahu, akbar, "y", 1.175, 1.175);
+		Vec2<float> nwordpls = Constraints::CenterConstraint(allahu, akbar, "y", 1.175, 1.175);
 
 		// watermark
-		if (SDK::clientInstance->getTopScreenName() == "inventory_screen" ||
-			SDK::CurrentScreen.find("chest") != std::string::npos)
-			if (Client::settings.getSettingByName<bool>("watermark")->value)
+		if (SDK::clientInstance->getTopScreenName() == "inventory_screen" || SDK::CurrentScreen.find("chest") != std::string::npos) {
+
+        }
+			/*if (Client::settings.getSettingByName<bool>("watermark")->value)
 				MusuiGUI::Image("\\Musui\\assets\\Musui-title.png",
-					D2D1::RectF(allahuakbar.x, allahuakbar.y, allahuakbar.x + allahu,
-						allahuakbar.y + akbar));
+					D2D1::RectF(nwordpls.x, nwordpls.y, nwordpls.x + allahu,
+						nwordpls.y + akbar));*/
 
 
 		if (MusuiGUI::scrollposmodifier == 0) {

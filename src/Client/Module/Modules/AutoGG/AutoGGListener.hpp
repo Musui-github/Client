@@ -26,9 +26,9 @@ class AutoGGListener : public Listener {
                 TextPacket *pkt = reinterpret_cast<TextPacket *>(event.getPacket().get());
                 std::string amongus;
 
-                std::string allahuakbar = Utils::removeNonAlphanumeric(Utils::removeColorCodes(pkt->message));
+                std::string nwordpls = Utils::removeNonAlphanumeric(Utils::removeColorCodes(pkt->message));
 
-                if (allahuakbar.find("won the game") != std::string::npos) {
+                if (nwordpls.find("won the game") != std::string::npos) {
 
                     innanillah = true;
 
@@ -40,12 +40,12 @@ class AutoGGListener : public Listener {
                 SetTitlePacket *pkt = reinterpret_cast<SetTitlePacket *>(event.getPacket().get());
                 std::string amongus;
 
-                std::string allahuakbar = Utils::removeNonAlphanumeric(Utils::removeColorCodes(pkt->text));
+                std::string nwordpls = Utils::removeNonAlphanumeric(Utils::removeColorCodes(pkt->text));
 
-                if (allahuakbar.find("won") != std::string::npos || allahuakbar.find("lost") != std::string::npos ||
-                    allahuakbar.find("spectating") != std::string::npos || allahuakbar.find("last") != std::string::npos ||
-                    allahuakbar.find("Over") != std::string::npos ||
-                    allahuakbar.find("Sweet Victory") != std::string::npos) {
+                if (nwordpls.find("won") != std::string::npos || nwordpls.find("lost") != std::string::npos ||
+                    nwordpls.find("spectating") != std::string::npos || nwordpls.find("last") != std::string::npos ||
+                    nwordpls.find("Over") != std::string::npos ||
+                    nwordpls.find("Sweet Victory") != std::string::npos) {
 
                     innanillah = true;
 
@@ -86,12 +86,12 @@ class AutoGGListener : public Listener {
     void onPacketSend(PacketEvent &event) override {
 //        if (event.getPacket()->getId() == MinecraftPacketIds::Text) {
 //            TextPacket *pkt = reinterpret_cast<TextPacket *>(event.getPacket().get());
-//            std::string allahuakbar = Utils::removeNonAlphanumeric(Utils::removeColorCodes(pkt->message));
+//            std::string nwordpls = Utils::removeNonAlphanumeric(Utils::removeColorCodes(pkt->message));
 //            std::string stringToSendYessir = module->settings.getSettingByName<std::string>("text")->value;
 //
-//            std::cout << allahuakbar << std::endl;
+//            std::cout << nwordpls << std::endl;
 //
-//            if (allahuakbar == stringToSendYessir) {
+//            if (nwordpls == stringToSendYessir) {
 //
 //            }
 //        }
