@@ -20,7 +20,7 @@ class TextHotkeyListener : public Listener {
         if (SDK::CurrentScreen == "hud_screen")
             if (module->settings.getSettingByName<bool>("enabled")->value) {
                 std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - last_used;
-                if (duration.count() >= 0.1) {
+                if (duration.count() >= 2.5) {
                     if (module->IsKeybind(event.keys) && module->IsKeyPartOfKeybind(event.key)) {
                         auto player = SDK::clientInstance->getLocalPlayer();
                         std::string xuid = *player->getXuid(&xuid);

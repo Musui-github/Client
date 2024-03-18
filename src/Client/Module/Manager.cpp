@@ -43,6 +43,7 @@
 #include "Modules/TabList/TabList.hpp"
 #include "Modules/AutoGG/AutoGG.hpp"
 #include "Modules/TextHotkey/TextHotkey.hpp"
+#include "Modules/Spammer/Spammer.hpp"
 #include "Modules/Nick/NickModule.hpp"
 #include "Modules/SpeedDisplay/SpeedDisplay.hpp"
 #include "Modules/Misc/CentreCursor/CentreCursor.hpp"
@@ -105,6 +106,7 @@ void ModuleManager::initialize()
     modules.push_back(new TabList());
     modules.push_back(new AutoGG());
     modules.push_back(new TextHotkey());
+    modules.push_back(new Spammer());
     modules.push_back(new NickModule());
     modules.push_back(new FreeLook());
     modules.push_back(new SpeedDisplay());
