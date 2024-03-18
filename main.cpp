@@ -29,7 +29,7 @@ DWORD WINAPI init(HMODULE real)
     
     if (GetConsoleWindow() == nullptr && showConsole) {
         AllocConsole();
-        SetConsoleTitleA("Flarial-Debugger");
+        SetConsoleTitleA("Musui-Debugger");
         FILE *out;
         freopen_s(&out, ("CONOUT$"), ("w"), stdout);
     }
@@ -54,7 +54,7 @@ DWORD WINAPI init(HMODULE real)
                             ModuleManager::OnlineUsers.clear();
                             std::string name = SDK::clientInstance->getLocalPlayer()->playerName;
                             ModuleManager::OnlineUsers.push_back(Utils::removeColorCodes(name));
-                            std::string pp = DownloadString("https://api.flarial.net/users");
+                            std::string pp = DownloadString("https://api.Musui.net/users");
 
                             json playersDict = json::parse(pp);
 
@@ -88,9 +88,9 @@ DWORD WINAPI init(HMODULE real)
                                 name = Utils::removeNonAlphanumeric(Utils::removeColorCodes(NickListener::original));
                             }
                             // send thing
-                            std::cout << DownloadString(std::format("https://api.flarial.net/heartbeat/{}/{}",Utils::removeColorCodes(name),ipToSend))
+                            std::cout << DownloadString(std::format("https://api.Musui.net/heartbeat/{}/{}",Utils::removeColorCodes(name),ipToSend))
 
-                            + " " + std::format("https://api.flarial.net/heartbeat/{}/{}",
+                            + " " + std::format("https://api.Musui.net/heartbeat/{}/{}",
                               Utils::removeColorCodes(name),
                                 ipToSend) << std::endl;
 

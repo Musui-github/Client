@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24.0)
-project(Flarial VERSION 1.0 LANGUAGES CXX)
+project(Musui VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -38,19 +38,19 @@ endif()
 
 file(GLOB_RECURSE sources "main.cpp" "src/**/*.cpp" "src/**/*.hpp" "lib/**/*.cpp")
 
-add_library(Flarial SHARED ${sources} src/SDK/Client/Render/Matrix.cpp)
+add_library(Musui SHARED ${sources} src/SDK/Client/Render/Matrix.cpp)
 
-target_include_directories(Flarial PRIVATE "${CMAKE_CURRENT_LIST_DIR}/lib/include/" "${CMAKE_CURRENT_LIST_DIR}/lib/glm/")
+target_include_directories(Musui PRIVATE "${CMAKE_CURRENT_LIST_DIR}/lib/include/" "${CMAKE_CURRENT_LIST_DIR}/lib/glm/")
 
 # Disable RTTI
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(Flarial PRIVATE -fno-rtti)
+    target_compile_options(Musui PRIVATE -fno-rtti)
 elseif (MSVC)
-    target_compile_options(Flarial PRIVATE /GR-)
+    target_compile_options(Musui PRIVATE /GR-)
 endif()
 
 add_library(sussy SHARED IMPORTED GLOBAL)
 set_target_properties(sussy PROPERTIES IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/lib/minhook/minhook.lib")
 
-target_link_libraries(Flarial PRIVATE windowscodecs.lib urlmon.lib dwrite.lib d3d12.lib dxgi.lib d3d11.lib d2d1.lib wininet.lib version)
-target_link_libraries(Flarial PUBLIC sussy)
+target_link_libraries(Musui PRIVATE windowscodecs.lib urlmon.lib dwrite.lib d3d12.lib dxgi.lib d3d11.lib d2d1.lib wininet.lib version)
+target_link_libraries(Musui PUBLIC sussy)
