@@ -12,7 +12,7 @@ class GUIKeyListener : public Listener {
     std::chrono::steady_clock::time_point lastOnKeyTime = std::chrono::steady_clock::now();
 
     void onPacketSend(PacketEvent &event) override {
-        if(event.getPacket()->getId() === MinecraftPacketIds::SetLocalPlayerAsInitialized) {
+        if (event.getPacket()->getId() == MinecraftPacketIds::SetLocalPlayerAsInitialized) {
             MusuiGUI::Notify("Playing on " + RaknetTickHook::towriteip);
         }
     }
